@@ -9,6 +9,11 @@ Numbered versions below are published releases with installers:
 
 ## Unreleased
 
+### Changed
+
+- Simplified the website's opening headline and description around how Kara is
+  used, keeping the technical details in the rest of the page.
+
 ## [0.3.5] - 2026-10-11
 
 ### Fixed
