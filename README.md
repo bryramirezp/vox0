@@ -4,15 +4,15 @@
 
 # Kara
 
-**Free offline speech to text for Windows.**
+**Free offline Whisper dictation for Windows.**
 Hold a key, speak, and it types for you.
 
 No account, no cloud, no subscription.
 
 <img src="docs/screenshot-main-dark.png" alt="The Kara window, listing sentences that have been dictated" width="300">
 
-[**Download CPU edition**](https://github.com/bryramirezp/kara/releases/download/v0.3.4/Kara-Setup-0.3.4.exe)
- · [**NVIDIA GPU edition**](https://github.com/bryramirezp/kara/releases/download/v0.3.4/Kara-Setup-GPU-0.3.4.exe)
+[**Download CPU edition**](https://github.com/bryramirezp/kara/releases/download/v0.3.5/Kara-Setup-0.3.5.exe)
+ · [**NVIDIA GPU edition**](https://github.com/bryramirezp/kara/releases/download/v0.3.5/Kara-Setup-GPU-0.3.5.exe)
  · [Website](https://bryramirezp.github.io/kara/)
  · [What's changed](CHANGELOG.md)
  · [All files](https://github.com/bryramirezp/kara/releases/latest)
@@ -24,8 +24,9 @@ No account, no cloud, no subscription.
 You hold down a key. You talk. You let go. A moment later your words appear in
 whatever app you were using — your browser, Word, a chat, anywhere you can type.
 
-It uses [faster-whisper](https://github.com/SYSTRAN/faster-whisper) to turn speech
-into text. Everything happens on your own computer. Your voice is never sent
+It uses OpenAI's Whisper through
+[faster-whisper](https://github.com/SYSTRAN/faster-whisper) to turn speech
+into text. Transcription happens on your own computer. Your voice is never sent
 anywhere, and you can unplug the internet and it still works.
 
 People usually find this while looking for a **free alternative to Dragon
@@ -49,8 +50,8 @@ that. It dictates text, and that part is free and works with no connection.
 
 | Edition | Download | Best for |
 | --- | --- | --- |
-| **CPU — works on any PC** | [Kara-Setup-0.3.4.exe](https://github.com/bryramirezp/kara/releases/download/v0.3.4/Kara-Setup-0.3.4.exe) — <!--dl-size-->73 MB<!--/dl-size--> | Every Windows PC. |
-| **NVIDIA GPU** | [Kara-Setup-GPU-0.3.4.exe](https://github.com/bryramirezp/kara/releases/download/v0.3.4/Kara-Setup-GPU-0.3.4.exe) | NVIDIA graphics card with a current driver; faster transcription. |
+| **CPU — works on any PC** | [Kara-Setup-0.3.5.exe](https://github.com/bryramirezp/kara/releases/download/v0.3.5/Kara-Setup-0.3.5.exe) — <!--dl-size-->74 MB<!--/dl-size--> | Every Windows PC. |
+| **NVIDIA GPU** | [Kara-Setup-GPU-0.3.5.exe](https://github.com/bryramirezp/kara/releases/download/v0.3.5/Kara-Setup-GPU-0.3.5.exe) | NVIDIA graphics card with a current driver; faster transcription. |
 
 Both editions work on Windows 10 and 11, share your settings and models, and
 install to the same location. Installing one over the other switches editions;
@@ -70,6 +71,10 @@ This happens once. After that it works offline.
 1. Hold **Insert** and speak.
 2. Let go. Your words are typed where your cursor is.
 3. Click the **⚙** button to change anything.
+
+Drag either the main window or Settings by its header to move Kara. The header
+shows the Kara logo; the small status circle is green at rest and red while
+recording.
 
 The app hides near the clock. Click that icon to bring it back.
 
@@ -136,6 +141,27 @@ setx KARA_PYTHON "C:\Path\To\pythonw.exe"
 ```
 
 Your settings live in `%LOCALAPPDATA%\Kara\settings.json`.
+
+### Isolated development environment (Windows)
+
+The installed app bundles its own dependencies; source development needs a
+separate Python environment. From the repository folder, run once:
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt pytest
+```
+
+Exit the installed Kara from its tray icon before starting the source app:
+
+```powershell
+.\.venv\Scripts\python.exe kara.py
+```
+
+Both editions share settings and allow only one running instance. Restart the
+source app after editing it. For NVIDIA development, install
+`requirements-gpu.txt` instead. `.venv/` and the local `Kara Development.lnk`
+shortcut are ignored by Git.
 
 To rebuild the icons after changing the drawing in the app:
 

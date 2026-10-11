@@ -18,6 +18,16 @@ def state(segmented):
     return states.pop()
 
 
+def assert_header_drag(app, frame):
+    header = frame.winfo_children()[0]
+    x, y = app.winfo_x(), app.winfo_y()
+    header._canvas.event_generate("<ButtonPress-1>", x=150, y=20)
+    header._canvas.event_generate("<B1-Motion>", x=130, y=10)
+    app.update()
+    assert (app.winfo_x(), app.winfo_y()) == (x - 20, y - 10)
+    header._canvas.event_generate("<ButtonRelease-1>", x=130, y=10)
+
+
 def test_settings_widgets_save_reload_and_localize(kara, monkeypatch):
     # No microphone, global listeners, tray, real model or user settings.
     monkeypatch.setattr(kara, "list_input_devices", lambda: [])
@@ -29,10 +39,28 @@ def test_settings_widgets_save_reload_and_localize(kara, monkeypatch):
         app = kara.KaraApp()
         windows.append(app)
         app.update()
+        assert_header_drag(app, app._main_frame)
+        logo = app._dot.cget("image")
+        assert logo.cget("light_image").getpixel((48, 48))[:3] == (232, 232, 232)
+        assert app._stage_mark.cget("fg_color") == "#abdb25"
+        app._set_recording(True)
+        assert app._stage_mark.cget("fg_color") == "#e74c3c"
+        assert app._dot.cget("image") is logo
+        app._set_recording(False)
+        assert app._stage_mark.cget("fg_color") == "#abdb25"
+        assert app._dot.cget("image") is logo
         app._show_settings()
+        app.update()
+        assert_header_drag(app, app._settings_frame)
         assert app._lang_var.get() == "Automático"
         assert state(app._numbers_seg) == "disabled"
         assert state(app._commands_seg) == "disabled"
+        for seg, variable in ((app._numbers_seg, app._numbers_var),
+                              (app._commands_seg, app._commands_var)):
+            for value, button in seg._buttons_dict.items():
+                expected = app.theme["text_on_accent" if value == variable.get()
+                                     else "text_on_button"]
+                assert button.cget("text_color_disabled") == expected
         assert "Automático" not in app._ui_lang_menu.cget("values")
 
         app._lang_var.set("Spanish")
@@ -73,6 +101,9 @@ def test_settings_widgets_save_reload_and_localize(kara, monkeypatch):
         app._settings = kara.load_settings()
         app._rebuild_ui()
         app.update()
+        app._show_settings()
+        app.update()
+        assert_header_drag(app, app._settings_frame)
         assert app._lang_var.get() == "English"
         assert app._numbers_var.get() == "words"
         assert app._commands_var.get() == "all"

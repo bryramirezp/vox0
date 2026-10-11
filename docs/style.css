@@ -214,7 +214,10 @@ section { padding: 92px 0; border-top: 1px solid var(--line); }
   display: flex; align-items: center; gap: 7px;
   padding: 14px 20px 0; font: 9px var(--sans); color: var(--k-dim);
 }
-.win-fake-model .win-fake-mark { width: 15px; height: 15px; }
+.win-fake-status-dot {
+  width: 13px; height: 13px; flex: none; border-radius: 50%; background: #abdb25;
+}
+.is-listening .win-fake-status-dot { background: #e74c3c; }
 .win-fake-log { padding: 14px 16px 6px; min-height: 84px; }
 .win-fake-log p { margin: 0; }
 .win-fake-said {

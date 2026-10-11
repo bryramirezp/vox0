@@ -24,7 +24,6 @@ import unicodedata
 # Spanish first throughout this file. It is the default language, it is what the
 # people testing the app speak, and it is the harder of the two -- English
 # borrows the same machinery with a smaller table.
-LANGUAGES = ("es", "en")
 
 
 # ── Style prompt ──────────────────────────────────────────────────────────────

@@ -24,6 +24,7 @@ __pycache__/
 *.egg-info/
 .venv/
 venv/
+/Kara Development.lnk
 
 # Node (docs/demo.ts build only -- docs/demo.js is committed, this isn't)
 node_modules/

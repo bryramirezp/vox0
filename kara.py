@@ -5,7 +5,7 @@ Hold the configured hotkey to record. Release to transcribe and paste.
 Default hotkey: Insert
 """
 
-__version__ = "0.3.4"
+__version__ = "0.3.5"
 
 import sys
 import os
@@ -26,7 +26,6 @@ from collections import deque
 # The CPU and NVIDIA editions share the same application and settings.  Ask
 # whether CUDA can really load rather than guessing from the installer name.
 IS_PACKAGED = getattr(sys, "frozen", False)
-SOURCE_URL  = "https://github.com/bryramirezp/kara"
 
 # The packaged app carries Tcl/Tk.  Point the standard library to that copy so
 # users never need Python, Tcl or environment variables installed separately.
@@ -786,10 +785,8 @@ def _make_tray_icon(rec=False, size=64, state=None, compact=None):
     what survives is a blob. A filled shape survives, and in a tray full of grey
     it is the colour that makes it findable at all.
 
-    `compact` forces that second drawing at any size, which is what the header
-    mark wants: it is displayed at 20px but has to be rendered large enough for
-    a 150% display, and picking the form by render size would have handed it the
-    ring at a scale the ring does not survive.
+    `compact` selects the simplified drawing independently of render size.
+    The window header explicitly uses the full logo at every display scale.
     """
     colour = MARK_STATES[state or ("recording" if rec else "idle")]
     if compact is None:
@@ -824,12 +821,8 @@ def _make_tray_icon(rec=False, size=64, state=None, compact=None):
 TRAY_IDLE = _make_tray_icon(False)
 TRAY_REC  = _make_tray_icon(True)
 
-# The same mark, in the window. It replaces a "●" glyph that was the only piece
-# of chrome not carrying the brand, and it is the app's own drawing rather than
-# a file: nothing here opens an image at runtime, and there is no _MEIPASS
-# helper, so a bundled PNG would resolve against the wrong directory once
-# PyInstaller has had it. Rendered at 96 and shown at 20 so a 150% display has
-# real pixels to scale into.
+# The full logo in the header, drawn without runtime asset paths. Rendered at
+# 96 and shown at 20 so a 150% display has real pixels to scale into.
 MARK_PX  = 20
 _MARK_HI = 96
 _mark_cache = {}
@@ -843,7 +836,7 @@ def mark_image(state, px=MARK_PX):
     """
     key = (state, px)
     if key not in _mark_cache:
-        art = _make_tray_icon(size=_MARK_HI, state=state, compact=True)
+        art = _make_tray_icon(size=_MARK_HI, state=state, compact=False)
         _mark_cache[key] = ctk.CTkImage(light_image=art, dark_image=art, size=(px, px))
     return _mark_cache[key]
 
@@ -1769,8 +1762,7 @@ class KaraApp(ctk.CTk):
         hdr.bind("<ButtonPress-1>", self._drag_start)
         hdr.bind("<B1-Motion>",     self._drag_move)
 
-        # The mark, not a bullet. Same drawing as the tray icon and the installer
-        # artwork, so the window agrees with every other place the app appears.
+        # Keep the full brand mark in the header; recording has its own indicator.
         self._dot = ctk.CTkLabel(hdr, text="", image=mark_image("idle"), width=26)
         self._dot.pack(side="left", padx=(12, 6))
 
@@ -1799,8 +1791,8 @@ class KaraApp(ctk.CTk):
         # is happening.
         bar = ctk.CTkFrame(self._main_frame, fg_color="transparent")
         bar.pack(fill="x", padx=20, pady=(14, 0))
-        self._stage_mark = ctk.CTkLabel(bar, text="", image=mark_image("idle", 13),
-                                        width=15)
+        self._stage_mark = ctk.CTkFrame(bar, width=13, height=13, corner_radius=7,
+                                       fg_color="#abdb25")
         self._stage_mark.pack(side="left", padx=(0, 7))
         self._model_info = ctk.CTkLabel(bar, text=self._last_model_label,
                                         font=("Segoe UI", 9),
@@ -1903,6 +1895,8 @@ class KaraApp(ctk.CTk):
                            corner_radius=0, height=48)
         hdr.pack(fill="x")
         hdr.pack_propagate(False)
+        hdr.bind("<ButtonPress-1>", self._drag_start)
+        hdr.bind("<B1-Motion>",     self._drag_move)
 
         ctk.CTkButton(hdr, text="←", width=36, height=28, corner_radius=8,
                       fg_color="transparent", hover_color=t["hover_neutral"],
@@ -1998,8 +1992,9 @@ class KaraApp(ctk.CTk):
                 try:
                     chosen = variable.get()
                     for value, btn in seg._buttons_dict.items():
-                        btn.configure(text_color=t["text_on_accent"] if value == chosen
-                                      else t["text_on_button"])
+                        colour = t["text_on_accent"] if value == chosen else t["text_on_button"]
+                        # Disabled options still need contrast on the selected lime.
+                        btn.configure(text_color=colour, text_color_disabled=colour)
                 except Exception:
                     pass
 
@@ -2496,13 +2491,11 @@ class KaraApp(ctk.CTk):
     def _set_recording(self, is_rec):
         t = self.theme
         if is_rec:
-            self._dot.configure(image=mark_image("recording"))
-            self._stage_mark.configure(image=mark_image("recording", 13))
+            self._stage_mark.configure(fg_color="#e74c3c")
             self._status.configure(text=karai18n.t("status_listening"), text_color=t["rec_status_text"])
             self._set_meter("recording")
         else:
-            self._dot.configure(image=mark_image("idle"))
-            self._stage_mark.configure(image=mark_image("idle", 13))
+            self._stage_mark.configure(fg_color="#abdb25")
             self._status.configure(text=karai18n.t("status_writing"), text_color=t["processing_text"])
             self._set_meter("idle")
 

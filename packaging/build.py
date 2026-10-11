@@ -28,6 +28,9 @@ APP  = os.path.join(DIST, "Kara")
 # winget installs Inno Setup per user by default, the GitHub runners get it
 # machine-wide through choco, and either way someone may just have it on PATH.
 ISCC_CANDIDATES = [
+    os.path.join(os.environ.get("LOCALAPPDATA", ""), "Programs", "Inno Setup 7", "ISCC.exe"),
+    r"C:\Program Files\Inno Setup 7\ISCC.exe",
+    r"C:\Program Files (x86)\Inno Setup 7\ISCC.exe",
     os.path.join(os.environ.get("LOCALAPPDATA", ""), "Programs", "Inno Setup 6", "ISCC.exe"),
     r"C:\Program Files (x86)\Inno Setup 6\ISCC.exe",
     r"C:\Program Files\Inno Setup 6\ISCC.exe",
@@ -60,7 +63,7 @@ def build_exe(gpu):
     # The previous flavour's files are still in there and PyInstaller does not
     # remove what it no longer produces.
     shutil.rmtree(APP, ignore_errors=True)
-    run([sys.executable, "-m", "PyInstaller", "--noconfirm",
+    run([sys.executable, "-m", "PyInstaller", "--clean", "--noconfirm",
          os.path.join("packaging", "kara.spec")], env=env)
     exe = os.path.join(APP, "Kara.exe")
     if not os.path.exists(exe):
@@ -98,7 +101,7 @@ def build_installer(ver, signed, gpu):
     iscc = next((p for p in ISCC_CANDIDATES if p and os.path.exists(p)),
                 shutil.which("ISCC"))
     if not iscc:
-        sys.exit("Inno Setup 6 not found. winget install JRSoftware.InnoSetup")
+        sys.exit("Inno Setup not found. winget install JRSoftware.InnoSetup")
     cmd = [iscc, f"/DAppVersion={ver}"]
     if gpu:
         cmd.append("/DGpuBuild=1")

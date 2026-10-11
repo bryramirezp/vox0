@@ -10,6 +10,34 @@ No asumas la versión actual, arquitectura, herramientas instaladas ni estado de
 
 ## Método de trabajo
 
+### Entorno de desarrollo y preparación de versiones
+
+- Trabajamos directamente en `C:\Users\Nebula\Desktop\kara`. El acceso directo
+  **Kara Development** ejecuta `kara.py` desde este checkout con el Python de
+  `.venv/`; reiniciar la aplicación carga los cambios del código.
+- `.venv/` y `Kara Development.lnk` son locales, están excluidos de Git y no se
+  distribuyen. La aplicación instalada no proporciona las dependencias del
+  entorno de desarrollo.
+- El entorno Python está aislado, pero Development y la aplicación instalada
+  comparten configuración y modelos. Solo puede ejecutarse una instancia;
+  cerrar la instalada desde la bandeja antes de probar Development.
+- Una solicitud de "preparar la versión X.Y.Z" incluye alinear la versión del
+  código, changelog y documentación, compilar los instaladores CPU y GPU y
+  completar las validaciones de build y release de este documento. No incluye
+  subir ni publicar, salvo autorización explícita en la misma solicitud o ya
+  vigente para esa versión.
+- Si el usuario pide explícitamente preparar, compilar, subir y publicar esa
+  versión, completar el flujo con esa autorización, sin pedirla otra vez.
+  Pedir "subir" autoriza la subida y el draft; publicar requiere que también
+  se haya autorizado la publicación.
+- Si el usuario solicita probar personalmente los instaladores antes de subir,
+  entregar los artefactos locales y esperar una nueva aprobación explícita.
+  Esta pausa revoca cualquier autorización previa de subida para esa versión.
+- Los releases usan exclusivamente los instaladores versionados y
+  `SHA256SUMS.txt` validados en `dist/`. Nunca incluir `.venv/`, accesos directos
+  de desarrollo ni archivos locales, ni apuntar Kara Development al payload
+  compilado. Una solicitud que sea solo de publicación no inicia otro build.
+
 Para toda tarea de desarrollo:
 
 1. Define el objetivo práctico y los criterios para considerarlo terminado.

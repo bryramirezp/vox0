@@ -44,18 +44,6 @@ def _load_drawing():
     return mod._make_tray_icon
 
 
-def _svg():
-    """Hand-written master, same fractions as the Pillow drawing."""
-    return """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
-  <title>Kara</title>
-  <circle cx="32" cy="32" r="32" fill="#171717"/>
-  <path d="M43.22 8.99A25.6 25.6 0 1 1 20.78 8.99" fill="none" stroke="#abdb25"
-        stroke-width="5.44" stroke-linecap="round"/>
-  <rect x="27.84" y="21.12" width="8.32" height="21.76" rx="4.16" fill="#e8e8e8"/>
-</svg>
-"""
-
-
 def main():
     make = _load_drawing()
     os.makedirs(ASSETS, exist_ok=True)
@@ -69,24 +57,14 @@ def main():
     # Windows wants every size in one file: 16 for the tray and title bar, 256
     # for the large view in Explorer.
     #
-    # Each frame is drawn at its own size rather than scaled down from the 256,
-    # so the small ones get the simplified mark and a stroke width that lands on
-    # whole pixels. Downscaling one big frame is what made 16px look like a smudge.
+    # Keep the full logo even in small Explorer and Start menu icons.
     ico_sizes = [16, 32, 48, 64, 128, 256]
-    frames = [make(False, n) for n in ico_sizes]
+    frames = [make(False, n, compact=False) for n in ico_sizes]
     ico = os.path.join(ASSETS, "icon.ico")
     frames[-1].save(ico, format="ICO",
                     sizes=[(n, n) for n in ico_sizes],
                     append_images=frames[:-1])
     written.append(("assets/icon.ico", os.path.getsize(ico)))
-
-    # Linux .desktop / hicolor, and general use.
-    save(make(False, 512),  os.path.join(ASSETS, "icon-512.png"))
-    save(make(False, 1024), os.path.join(ASSETS, "icon-1024.png"))
-
-    with open(os.path.join(ASSETS, "logo.svg"), "w", encoding="utf-8") as f:
-        f.write(_svg())
-    written.append(("assets/logo.svg", os.path.getsize(os.path.join(ASSETS, "logo.svg"))))
 
     # README header.
     save(make(False, 256), os.path.join(DOCS, "logo.png"))

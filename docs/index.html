@@ -3,17 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Kara — Free Offline Speech to Text for Windows</title>
+<title>Kara — Free Offline Whisper Dictation for Windows</title>
 
 <link rel="canonical" href="https://bryramirezp.github.io/kara/">
-<meta name="description" content="Free, open source dictation for Windows. Hold a key, speak, and it types into any app. Runs fully offline with Whisper — no account, no cloud, no subscription. A free alternative to Dragon NaturallySpeaking and Otter.ai.">
+<meta name="description" content="Kara is a free, open source Whisper dictation app for Windows. Turn speech into text in any app, locally on your PC. No account, cloud or subscription.">
 <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
 <meta name="theme-color" content="#0f0f0f">
 
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://bryramirezp.github.io/kara/">
-<meta property="og:title" content="Kara — Free Offline Speech to Text for Windows">
-<meta property="og:description" content="Hold a key, speak, and it types. Runs fully offline on your own computer. Free and open source.">
+<meta property="og:title" content="Kara — Free Offline Whisper Dictation for Windows">
+<meta property="og:description" content="Free, open source Whisper dictation for Windows. Hold a key, speak, and it types into any app. Your voice stays on your PC.">
 <meta property="og:image" content="https://bryramirezp.github.io/kara/social-preview.png">
 <meta name="twitter:card" content="summary_large_image">
 
@@ -40,13 +40,13 @@
   "applicationCategory": "UtilitiesApplication",
   "applicationSubCategory": "Speech Recognition",
   "operatingSystem": "Windows 10, Windows 11",
-  "softwareVersion": "0.3.4",
+  "softwareVersion": "0.3.5",
   "url": "https://bryramirezp.github.io/kara/",
-  "downloadUrl": "https://github.com/bryramirezp/kara/releases/download/v0.3.4/Kara-Setup-0.3.4.exe",
+  "downloadUrl": "https://github.com/bryramirezp/kara/releases/download/v0.3.5/Kara-Setup-0.3.5.exe",
   "codeRepository": "https://github.com/bryramirezp/kara",
   "license": "https://opensource.org/licenses/MIT",
   "isAccessibleForFree": true,
-  "description": "Push-to-talk dictation for Windows. Hold a key, speak, release, and the text is typed into whatever app has focus. Runs fully offline using Whisper.",
+  "description": "Kara is a free, open source Whisper dictation app for Windows. Hold a key, speak, release, and your speech becomes text in any app. Transcription runs locally on your PC using faster-whisper.",
   "featureList": [
     "Works fully offline, with no internet connection",
     "No account and no subscription",
@@ -95,7 +95,7 @@
     <nav><a href="install.html">Install guide</a></nav>
     <span class="grow"></span>
     <button class="theme-toggle" data-theme-toggle type="button"></button>
-    <a class="btn" data-pick-topbar href="https://github.com/bryramirezp/kara/releases/download/v0.3.4/Kara-Setup-0.3.4.exe">Download</a>
+    <a class="btn" data-pick-topbar href="https://github.com/bryramirezp/kara/releases/download/v0.3.5/Kara-Setup-0.3.5.exe">Download</a>
   </div>
 </div>
 
@@ -103,10 +103,12 @@
   <div class="wrap">
     <button class="theme-toggle" data-theme-toggle type="button"></button>
     <img class="mark" src="logo.png" alt="Kara logo">
-    <h1>Speak.<br>It <span class="lime">types</span>.</h1>
+    <h1>Kara — free offline<br><span class="lime">Whisper dictation</span><br>for Windows.</h1>
     <p class="lede">
-      Hold a key, say it out loud, let go. Your words land in whatever app you
-      are using. No internet, no account, no subscription.
+      Turn speech into text in any Windows app with OpenAI's Whisper,
+      running locally through faster-whisper. Hold a key, speak, and let go.
+      After the initial model download, dictation works offline.
+      No account, no subscription.
     </p>
 
     <!-- The app itself, photographed, first thing -- before anyone is asked to
@@ -140,7 +142,7 @@
           <span class="win-fake-icons" aria-hidden="true">⚙ &#8212; &#10005;</span>
         </div>
         <div class="win-fake-model">
-          <img class="win-fake-mark" src="logo.png" alt="">
+          <span class="win-fake-status-dot" aria-hidden="true"></span>
           large-v3-turbo model &middot; ready
         </div>
         <div class="win-fake-log" data-demo-log>
@@ -163,19 +165,19 @@
 
     <div class="pick">
       <div class="pick-row">
-        <a class="btn pick-btn pick-gpu" id="heroBtn" data-pick-gpu href="https://github.com/bryramirezp/kara/releases/download/v0.3.4/Kara-Setup-GPU-0.3.4.exe">
+        <a class="btn pick-btn pick-gpu" id="heroBtn" data-pick-gpu href="https://github.com/bryramirezp/kara/releases/download/v0.3.5/Kara-Setup-GPU-0.3.5.exe">
           <span class="pick-label">NVIDIA GPU — faster</span>
           <small>GPU NVIDIA compatible · driver required</small>
         </a>
-        <a class="btn btn-ghost pick-btn pick-cpu" data-pick-cpu href="https://github.com/bryramirezp/kara/releases/download/v0.3.4/Kara-Setup-0.3.4.exe">
+        <a class="btn btn-ghost pick-btn pick-cpu" data-pick-cpu href="https://github.com/bryramirezp/kara/releases/download/v0.3.5/Kara-Setup-0.3.5.exe">
           <span class="pick-label">CPU — works on any PC</span>
-          <small><!--dl-size-->73 MB<!--/dl-size--> · smaller download</small>
+          <small><!--dl-size-->74 MB<!--/dl-size--> · smaller download</small>
         </a>
       </div>
     </div>
     <p class="sub">The NVIDIA edition includes its CUDA support. No download is needed after installation.</p>
     <p class="sub">
-      Kara <!--app-version-->0.3.4<!--/app-version--> · Windows 10 and 11 · nothing else to install<br>
+      Kara <!--app-version-->0.3.5<!--/app-version--> · Windows 10 and 11 · nothing else to install<br>
       <a href="install.html">Step by step install guide</a>
       · <a href="https://github.com/bryramirezp/kara/releases/latest">All files and release notes</a>
     </p>

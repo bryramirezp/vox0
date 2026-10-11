@@ -125,8 +125,9 @@ def rules(ver, mb):
     # on a file its own button had just saved under a different name. That
     # command is the answer the page gives to "how do I know this is safe", so
     # it failing with a path error is worse than the size being a megabyte out.
-    NAME = r"Kara-Setup-\d+\.\d+\.\d+\.exe"
-    r.append(("docs/install.html", NAME, "Kara-Setup-%s.exe" % ver))
+    NAME = r"(Kara-Setup(?:-GPU)?-)\d+\.\d+\.\d+(\.exe)"
+    for rel in ("README.md", "docs/index.html", "docs/install.html"):
+        r.append((rel, NAME, r"\g<1>%s\g<2>" % ver))
 
     # And the one machine-readable link that was still pointing at the floating
     # "latest" while every button on the page had moved to a fixed version.

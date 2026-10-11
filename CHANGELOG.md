@@ -9,10 +9,42 @@ Numbered versions below are published releases with installers:
 
 ## Unreleased
 
+## [0.3.5] - 2026-10-11
+
+### Fixed
+
+- Release documentation updates the visible CPU/GPU installer filenames as well
+  as their download URLs.
+- Installed shortcuts, the executable and installers use the full Kara logo
+  at every icon size, including the small Windows Start menu icon.
+- Disabled text options in automatic language mode retain readable label contrast
+  on the selected green background.
+- The window header displays the full Kara logo. The recording indicator is now
+  a plain green circle at rest and red while recording.
+- Updated the website screenshots and animated demo to match the new indicators.
+- Settings can now be dragged by its header, just like the main window.
+
 ### Changed
 
+- Release builds now clear PyInstaller intermediates and also detect Inno Setup 7.
+- Added a public Google Search Console verification file to the Pages source.
+- The website title, main heading, search and social descriptions, and README
+  now identify Kara as a free offline Whisper dictation app for Windows.
+- Prepared the domain-root robots.txt for publication through the GitHub Pages
+  user-site repository; the project site's `/kara/robots.txt` does not serve
+  as the host-root crawler configuration.
+- Documented an isolated Windows development environment and excluded the local
+  development shortcut from Git.
+- Clarified the development checkout and the separate build and publication
+  workflow in the repository instructions.
 - Releases now upload the locally validated installers; pushing a tag no longer
   rebuilds or publishes them through GitHub Actions.
+
+### Removed
+
+- Removed unused constants and unused PNG/SVG logo outputs; the logo generator
+  retains the Windows icon, website logo and social preview.
+- Removed the historical 0.3.2 automatic-language validation report.
 
 ## [0.3.4] - 2026-10-05
 
@@ -269,6 +301,7 @@ the website advertises.
 
 First release, under the name Dictation Tool.
 
+[0.3.5]: https://github.com/bryramirezp/kara/releases/tag/v0.3.5
 [0.3.4]: https://github.com/bryramirezp/kara/releases/tag/v0.3.4
 [0.3.2]: https://github.com/bryramirezp/kara/releases/tag/v0.3.2
 [0.3.3]: https://github.com/bryramirezp/kara/releases/tag/v0.3.3

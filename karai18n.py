@@ -8,7 +8,6 @@ translation, not reviewed by a native speaker of those languages — spot-check
 before treating a phrasing as final.
 """
 
-LANGUAGES = ["es", "en", "pt", "fr", "de", "it"]   # must match kara.LANGUAGE_CODES
 
 STRINGS = {
     "en": {
