@@ -29,7 +29,7 @@ import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-SITE = "https://bryramirezp.github.io/kara/"
+SITE = "https://bryramirezp.github.io/vox0/"
 
 
 def version():
@@ -117,10 +117,11 @@ def rules(ver, mb, brand="Vox0"):
     # from the first link in the README to the last ".exe" in the file and ate
     # the thirty-four lines in between.
     #
-    URL = (r"(https://github\.com/bryramirezp/kara/releases/download/)"
+    URL = (r"https://github\.com/bryramirezp/(?:kara|vox0)/releases/download/"
            r"v[^/\s\"')]+/(?:Kara|Vox0)-Setup(-GPU)?-[^\s\"')]+(\.exe)")
     for rel in ("README.md", "docs/index.html", "docs/install.html"):
-        r.append((rel, URL, r"\g<1>v%s/%s-Setup\g<2>-%s\g<3>" % (ver, brand, ver)))
+        r.append((rel, URL, r"https://github.com/bryramirezp/vox0/releases/download/"
+                  r"v%s/%s-Setup\g<1>-%s\g<2>" % (ver, brand, ver)))
 
     # The installer's name in prose, which is not the same thing as the link.
     # Versioning the links and leaving the words alone left the install guide
@@ -137,7 +138,7 @@ def rules(ver, mb, brand="Vox0"):
     # "latest" while every button on the page had moved to a fixed version.
     r.append(("docs/index.html",
               r'("downloadUrl": ")[^"]*(")',
-              r"\g<1>https://github.com/bryramirezp/kara/releases/download/"
+              r"\g<1>https://github.com/bryramirezp/vox0/releases/download/"
               r"v%s/%s-Setup-%s.exe\g<2>" % (ver, brand, ver)))
 
     if mb is not None:

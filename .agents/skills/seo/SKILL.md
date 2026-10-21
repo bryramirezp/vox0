@@ -19,7 +19,7 @@ tools. No additional Python packages are needed for these workflows.
 ## Project context
 
 - The public site is static HTML in `docs/`, served at
-  `https://bryramirezp.github.io/kara/`. `docs/index.html` is the landing page and
+  `https://bryramirezp.github.io/vox0/`. `docs/index.html` is the landing page and
   `docs/install.html` is the installation guide. `README.md` repeats product copy.
 - Position Vox0 as free, open source offline Whisper dictation for Windows:
   hold a key, speak, release, and insert text into the active app. Transcription

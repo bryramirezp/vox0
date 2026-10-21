@@ -5,7 +5,7 @@ All notable changes to Vox0 (formerly Kara). The format follows
 [semantic versioning](https://semver.org/spec/v2.0.0.html).
 
 Numbered versions below are releases with installers:
-[all releases](https://github.com/bryramirezp/kara/releases).
+[all releases](https://github.com/bryramirezp/vox0/releases).
 
 ## Unreleased
 

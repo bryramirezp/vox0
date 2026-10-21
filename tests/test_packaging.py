@@ -34,19 +34,21 @@ def test_runtime_has_no_dynamic_gpu_downloader():
     assert not (ROOT / "gpu_component.py").exists()
 
 
-def test_docs_stamp_updates_download_labels_and_urls(monkeypatch):
+@pytest.mark.parametrize("repository", ["kara", "vox0"])
+def test_docs_stamp_updates_download_labels_and_urls(monkeypatch, repository):
     import re
     from tools import stamp_docs
 
     monkeypatch.setattr(stamp_docs, "last_commit_date", lambda path: "2026-10-11")
-    text = ('[Kara-Setup-0.3.5.exe](https://github.com/bryramirezp/kara/releases/download/v0.3.5/Kara-Setup-0.3.5.exe) '
-            '[Kara-Setup-GPU-0.3.5.exe](https://github.com/bryramirezp/kara/releases/download/v0.3.5/Kara-Setup-GPU-0.3.5.exe)')
+    text = (f'[Kara-Setup-0.3.5.exe](https://github.com/bryramirezp/{repository}/releases/download/v0.3.5/Kara-Setup-0.3.5.exe) '
+            f'[Kara-Setup-GPU-0.3.5.exe](https://github.com/bryramirezp/{repository}/releases/download/v0.3.5/Kara-Setup-GPU-0.3.5.exe)')
     for rel, pattern, replacement in stamp_docs.rules("0.3.6", None):
         if rel == "README.md":
             text = re.sub(pattern, replacement, text)
     assert "0.3.5" not in text
     assert text.count("Vox0-Setup-0.3.6.exe") == 2
     assert text.count("Vox0-Setup-GPU-0.3.6.exe") == 2
+    assert text.count("https://github.com/bryramirezp/vox0/releases/download/v0.3.6/") == 2
 
 
 def test_build_cleans_intermediates_and_excludes_gpu_environment(monkeypatch):

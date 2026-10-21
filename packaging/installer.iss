@@ -8,7 +8,7 @@
 
 #define AppName        "Vox0"
 #define AppPublisher   "bryramirezp"
-#define AppURL         "https://github.com/bryramirezp/kara"
+#define AppURL         "https://github.com/bryramirezp/vox0"
 #define AppExeName     "Vox0.exe"
 
 ; Passed in by packaging/build.py, which reads __version__ out of the source so

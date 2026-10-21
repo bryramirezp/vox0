@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://bryramirezp.github.io/kara/sitemap.xml
+Sitemap: https://bryramirezp.github.io/vox0/sitemap.xml

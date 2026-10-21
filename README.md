@@ -11,11 +11,11 @@ No account, no cloud, no subscription.
 
 <img src="docs/screenshot-main-dark.png" alt="Vox0 listing dictated sentences" width="300">
 
-[**Download CPU edition**](https://github.com/bryramirezp/kara/releases/download/v0.3.6/Vox0-Setup-0.3.6.exe)
- · [**NVIDIA GPU edition**](https://github.com/bryramirezp/kara/releases/download/v0.3.6/Vox0-Setup-GPU-0.3.6.exe)
- · [Website](https://bryramirezp.github.io/kara/)
+[**Download CPU edition**](https://github.com/bryramirezp/vox0/releases/download/v0.3.6/Vox0-Setup-0.3.6.exe)
+ · [**NVIDIA GPU edition**](https://github.com/bryramirezp/vox0/releases/download/v0.3.6/Vox0-Setup-GPU-0.3.6.exe)
+ · [Website](https://bryramirezp.github.io/vox0/)
  · [What's changed](CHANGELOG.md)
- · [All files](https://github.com/bryramirezp/kara/releases/latest)
+ · [All files](https://github.com/bryramirezp/vox0/releases/latest)
 
 </div>
 
@@ -54,8 +54,8 @@ Sources: [Wispr Flow features](https://wisprflow.ai/),
 
 | Edition | Download | Best for |
 | --- | --- | --- |
-| **CPU — works on any PC** | [Vox0-Setup-0.3.6.exe](https://github.com/bryramirezp/kara/releases/download/v0.3.6/Vox0-Setup-0.3.6.exe) — <!--dl-size-->74 MB<!--/dl-size--> | Every Windows PC. |
-| **NVIDIA GPU** | [Vox0-Setup-GPU-0.3.6.exe](https://github.com/bryramirezp/kara/releases/download/v0.3.6/Vox0-Setup-GPU-0.3.6.exe) | NVIDIA graphics card with a current driver; faster transcription. |
+| **CPU — works on any PC** | [Vox0-Setup-0.3.6.exe](https://github.com/bryramirezp/vox0/releases/download/v0.3.6/Vox0-Setup-0.3.6.exe) — <!--dl-size-->74 MB<!--/dl-size--> | Every Windows PC. |
+| **NVIDIA GPU** | [Vox0-Setup-GPU-0.3.6.exe](https://github.com/bryramirezp/vox0/releases/download/v0.3.6/Vox0-Setup-GPU-0.3.6.exe) | NVIDIA graphics card with a current driver; faster transcription. |
 
 Both editions work on Windows 10 and 11, share your settings and models, and
 install to the same location. Installing one over the other switches editions;
@@ -119,8 +119,8 @@ processor otherwise. The **gpu** option appears only when CUDA really loads.
 ### Running from source with a card
 
 ```bat
-git clone https://github.com/bryramirezp/kara.git
-cd kara
+git clone https://github.com/bryramirezp/vox0.git
+cd vox0
 py -3 -m pip install -r requirements-gpu.txt
 launch.bat
 ```

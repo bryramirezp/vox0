@@ -17,9 +17,11 @@ No asumas la versión actual, arquitectura, herramientas instaladas ni estado de
   `vox0text.py` y `vox0i18n.py`, y el spec es `packaging/vox0.spec`.
 - Conserva `%LOCALAPPDATA%\Kara`, el mutex `Kara_SingleInstance` y el AppId del
   instalador para compartir datos y bloqueo con las versiones anteriores.
-- El repositorio y los instaladores publicados hasta 0.3.5 conservan sus URLs
-  y nombres Kara. Los próximos builds usan Vox0; no inventes enlaces públicos
-  antes de preparar y publicar una versión. Renombrar código no autoriza builds.
+- El repositorio es `https://github.com/bryramirezp/vox0` y la web es
+  `https://bryramirezp.github.io/vox0/`. El directorio local sigue siendo `kara`.
+- Los instaladores publicados hasta 0.3.5 conservan sus nombres Kara. Mantén
+  los enlaces históricos y los tags publicados; GitHub redirige el repositorio
+  anterior. Renombrar el repositorio no autoriza recompilar una versión publicada.
 
 ### Entorno de desarrollo y preparación de versiones
 
