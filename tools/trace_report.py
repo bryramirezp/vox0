@@ -2,7 +2,7 @@
 
     py -3 tools/trace_report.py                        this machine's log
     py -3 tools/trace_report.py path\\to\\dir           every log under a directory
-    py -3 tools/trace_report.py Kara-diagnostics-*.zip  a zip somebody sent back
+    py -3 tools/trace_report.py Vox0-diagnostics-*.zip  a zip somebody sent back
 
 The question this answers is the one the raw file cannot: pressing the key takes
 eight milliseconds on one machine and two seconds on another, and the totals
@@ -189,7 +189,7 @@ def main():
     rows, paths = load(args.target)
     if not rows:
         print("nothing to read at %s" % args.target)
-        print("Kara writes this file on its own now, so an empty one means the "
+        print("Vox0 writes this file on its own now, so an empty one means the "
               "app has not transcribed anything yet on that machine.")
         return 1
     print("read %d unique cycles from %d file(s)" % (len(rows), len(paths)))

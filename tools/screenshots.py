@@ -59,13 +59,13 @@ def launch(env_extra):
     exe = os.path.join(os.path.dirname(sys.executable), "pythonw.exe")
     if not os.path.exists(exe):
         exe = sys.executable
-    return subprocess.Popen([exe, os.path.join(ROOT, "kara.py")], cwd=ROOT, env=env)
+    return subprocess.Popen([exe, os.path.join(ROOT, "vox0.py")], cwd=ROOT, env=env)
 
 
 def find_window(pid):
     """The app's own window, matched by process rather than by title.
 
-    Matching on the title "Kara" alone picked up a browser tab showing the
+    Matching on the title "Vox0" alone picked up a browser tab showing the
     project's website and photographed devtools instead of the app. The pid is
     the only thing that cannot collide.
     """
@@ -222,7 +222,7 @@ def shoot(theme, view, out_name, saved):
     s["theme"] = theme
     write_settings(s)
 
-    proc = launch({"KARA_DEBUG_LOG": "", "KARA_DEMO_LOG": "1"})
+    proc = launch({"VOX0_DEBUG_LOG": "", "VOX0_DEMO_LOG": "1"})
     print("  launching for %s/%s ..." % (view, theme))
     rect = None
     for _ in range(40):                     # the model load is the slow part
@@ -232,7 +232,7 @@ def shoot(theme, view, out_name, saved):
             break
     if not rect:
         proc.terminate()
-        raise SystemExit("could not find the Kara window")
+        raise SystemExit("could not find the Vox0 window")
     time.sleep(4.0)                          # let the seeded log land
     rect = move_window(proc.pid, 240, 90) or rect
 
@@ -301,7 +301,7 @@ def check(img, view):
 
 def main():
     saved = read_settings()
-    print("Kara screenshots -> docs/")
+    print("Vox0 screenshots -> docs/")
     print("  (your theme is %r and will be put back)" % saved.get("theme", "dark"))
     try:
         for theme in ("dark", "light"):

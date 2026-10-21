@@ -1,20 +1,20 @@
 """Copy this machine's trace into a private repo and push it.
 
-    py -3 tools/push_trace.py C:\\path\\to\\kara-traces
+    py -3 tools/push_trace.py C:\\path\\to\\vox0-traces
 
 Two laptops, one place to read them from. Each machine writes to its own file,
 named after itself, so two machines pushing the same day cannot overwrite each
 other and `git pull` never has to merge inside a line.
 
-Nothing here runs from the app. Kara has no network code and this script is not
+Nothing here runs from the app. Vox0 has no network code and this script is not
 imported by it -- it is run by hand, by the developer, when there is something
 worth looking at. That is the whole reason the app can keep saying it does not
 phone home.
 
 Before the first run, make the private repo and clone it:
 
-    gh repo create kara-traces --private
-    git clone https://github.com/<you>/kara-traces C:\\path\\to\\kara-traces
+    gh repo create vox0-traces --private
+    git clone https://github.com/<you>/vox0-traces C:\\path\\to\\vox0-traces
 """
 import argparse
 import io
@@ -56,14 +56,14 @@ def summarise(path):
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("repo", help="path to a clone of the private traces repo")
-    ap.add_argument("--machine", default=os.environ.get("KARA_MACHINE") or platform.node(),
-                    help="name this machine's file (default: KARA_MACHINE, else hostname)")
+    ap.add_argument("--machine", default=os.environ.get("VOX0_MACHINE") or os.environ.get("KARA_MACHINE") or platform.node(),
+                    help="name this machine's file (default: VOX0_MACHINE, else hostname)")
     ap.add_argument("--source", default=SRC, help="trace file to copy")
     ap.add_argument("--dry-run", action="store_true", help="copy nothing, push nothing")
     args = ap.parse_args()
 
     if not os.path.exists(args.source):
-        sys.exit("no trace at %s\nTurn it on with:  setx KARA_DEBUG_LOG 1" % args.source)
+        sys.exit("no trace at %s\nRecord a dictation in Vox0 to create the timing log." % args.source)
     if not os.path.isdir(os.path.join(args.repo, ".git")):
         sys.exit("%s is not a git clone" % args.repo)
 

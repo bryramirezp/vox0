@@ -48,23 +48,7 @@ def main():
     ap.add_argument("--out", help="write here instead of stdout")
     args = ap.parse_args()
 
-    version = args.tag.lstrip("v")
     body = section(args.tag)
-    body += ("\n\n---\n\n"
-             "**Download:** "
-             "[Kara-Setup-%s.exe]"
-             "(https://github.com/bryramirezp/kara/releases/download/v%s/"
-             "Kara-Setup-%s.exe) — Windows 10 and 11.\n\n"
-             "**NVIDIA GPU edition:** "
-             "[Kara-Setup-GPU-%s.exe]"
-             "(https://github.com/bryramirezp/kara/releases/download/v%s/"
-             "Kara-Setup-GPU-%s.exe).\n\n"
-             "Compare its SHA256 with `SHA256SUMS.txt` on the release page. "
-             "The "
-             "[install guide](https://bryramirezp.github.io/kara/install.html)"
-             " walks through it and shows how to check the file's SHA256 "
-             "against `SHA256SUMS.txt` below.\n"
-             % (version, version, version, version, version, version))
 
     if args.out:
         io.open(args.out, "w", encoding="utf-8", newline="\n").write(body)

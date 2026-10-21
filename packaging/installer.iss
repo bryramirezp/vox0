@@ -1,4 +1,4 @@
-; Installer for Kara.
+; Installer for Vox0.
 ;
 ;   "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" packaging\installer.iss
 ;
@@ -6,16 +6,16 @@
 ; administrator password. A dictation tool is not worth a UAC prompt, and asking
 ; for one is what makes people close the window and give up.
 
-#define AppName        "Kara"
+#define AppName        "Vox0"
 #define AppPublisher   "bryramirezp"
 #define AppURL         "https://github.com/bryramirezp/kara"
-#define AppExeName     "Kara.exe"
+#define AppExeName     "Vox0.exe"
 
 ; Passed in by packaging/build.py, which reads __version__ out of the source so
 ; the version is written down in exactly one place. The fallback only matters
 ; when someone runs ISCC by hand.
 #ifndef AppVersion
-  #define AppVersion "0.3.5"
+  #define AppVersion "0.3.6"
 #endif
 
 #ifdef GpuBuild
@@ -35,15 +35,18 @@ AppUpdatesURL={#AppURL}/releases
 
 ; Use the process environment rather than the Shell Folder registry value.
 ; This keeps the per-user install working in restricted Windows profiles too.
-DefaultDirName={%LOCALAPPDATA}\Programs\Kara
+DefaultDirName={%LOCALAPPDATA}\Programs\Vox0
+; Reuse Kara's install directory on upgrades; the AppId above must stay unchanged.
+UsePreviousAppDir=yes
 DefaultGroupName={#AppName}
+UsePreviousGroup=no
 DisableProgramGroupPage=yes
 PrivilegesRequired=lowest
 ArchitecturesAllowed=x64compatible
 ArchitecturesInstallIn64BitMode=x64compatible
 
 OutputDir=..\dist
-OutputBaseFilename=Kara-Setup{#SetupFlavor}-{#AppVersion}
+OutputBaseFilename=Vox0-Setup{#SetupFlavor}-{#AppVersion}
 SetupIconFile=..\assets\icon.ico
 UninstallDisplayIcon={app}\{#AppExeName}
 WizardStyle=modern
@@ -51,10 +54,10 @@ Compression=lzma2/max
 SolidCompression=yes
 VersionInfoVersion={#AppVersion}
 
-#ifdef SignKara
-; packaging/build.py passes the provider command as /Skara=... and signs the
-; setup and uninstaller after Kara.exe has already been signed.
-SignTool=kara
+#ifdef SignVox0
+; packaging/build.py passes the provider command as /Svox0=... and signs the
+; setup and uninstaller after Vox0.exe has already been signed.
+SignTool=vox0
 SignedUninstaller=yes
 #endif
 
@@ -68,10 +71,10 @@ Name: "italian";              MessagesFile: "compiler:Languages\Italian.isl"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; Flags: unchecked
-Name: "startup";     Description: "Start Kara when Windows starts"
+Name: "startup";     Description: "Start Vox0 when Windows starts"
 
 [Files]
-Source: "..\dist\Kara\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "..\dist\Vox0\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Icons]
 Name: "{group}\{#AppName}";            Filename: "{app}\{#AppExeName}"
@@ -81,11 +84,20 @@ Name: "{autodesktop}\{#AppName}";      Filename: "{app}\{#AppExeName}"; Tasks: d
 [Registry]
 ; Visible in Windows Settings > Apps > Startup, unlike a shortcut buried in
 ; the Startup folder.  Quotes keep the per-user AppData path safe if it has
-; spaces, and uninsdeletevalue removes it when Kara is uninstalled.
+; spaces, and uninsdeletevalue removes it when Vox0 is uninstalled.
 Root: HKCU; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; ValueType: string; \
-    ValueName: "Kara"; ValueData: """{app}\{#AppExeName}"""; Flags: uninsdeletevalue; Tasks: startup
+    ValueName: "Vox0"; ValueData: """{app}\{#AppExeName}"""; Flags: uninsdeletevalue; Tasks: startup
+; Replace Kara's startup entry without leaving a second launch at login.
+Root: HKCU; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; ValueName: "Kara"; Flags: deletevalue
 
 [InstallDelete]
+; Remove only the executable and shortcuts superseded by the new name.
+Type: files; Name: "{app}\Kara.exe"
+Type: files; Name: "{userprograms}\Kara\Kara.lnk"
+Type: files; Name: "{userprograms}\Kara\Uninstall Kara.lnk"
+Type: dirifempty; Name: "{userprograms}\Kara"
+Type: files; Name: "{autodesktop}\Kara.lnk"
+Type: files; Name: "{userstartup}\Kara.lnk"
 ; 0.3.2 used this legacy mechanism.  Remove it on every install so an upgrade
 ; cannot start two copies at login.
 Type: files; Name: "{userstartup}\{#AppName}.lnk"
@@ -105,7 +117,7 @@ Filename: "{app}\{#AppExeName}"; Description: "{cm:LaunchProgram,{#AppName}}"; \
 Type: files; Name: "{userstartup}\{#AppName}.lnk"
 
 [Code]
-function KaraUILang(): String;
+function Vox0UILang(): String;
 begin
   case ActiveLanguage of
     'spanish': Result := 'es';
@@ -126,7 +138,7 @@ begin
     // A user can deselect the task while upgrading. [Registry] then does not
     // create a value, but it also cannot remove the value from a prior install.
     if not WizardIsTaskSelected('startup') then
-      RegDeleteValue(HKCU, 'Software\Microsoft\Windows\CurrentVersion\Run', 'Kara');
+      RegDeleteValue(HKCU, 'Software\Microsoft\Windows\CurrentVersion\Run', 'Vox0');
 
     SettingsDir := GetEnv('LOCALAPPDATA') + '\Kara';
     SettingsFile := SettingsDir + '\settings.json';
@@ -136,7 +148,7 @@ begin
     if not FileExists(SettingsFile) then begin
       ForceDirectories(SettingsDir);
       SaveStringToFile(SettingsFile,
-        '{"ui_language": "' + KaraUILang() + '"}', False);
+        '{"ui_language": "' + Vox0UILang() + '"}', False);
     end;
   end;
 end;

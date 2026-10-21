@@ -25,6 +25,7 @@ __pycache__/
 .venv/
 venv/
 /Kara Development.lnk
+/Vox0 Development.lnk
 
 # Node (docs/demo.ts build only -- docs/demo.js is committed, this isn't)
 node_modules/

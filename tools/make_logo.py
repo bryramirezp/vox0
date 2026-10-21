@@ -5,7 +5,7 @@ never drift apart:
 
     py -3 tools/make_logo.py
 
-Importing kara would start the app, so this pulls the drawing function
+Importing vox0 would start the app, so this pulls the drawing function
 out of the source without executing the module-level setup.
 """
 import os
@@ -35,12 +35,12 @@ def _load_drawing():
     The module opens a mutex, shows a message box if one is already running and
     builds a Tk window at import time, so it cannot simply be imported here.
     """
-    src = open(os.path.join(ROOT, "kara.py"), encoding="utf-8").read()
+    src = open(os.path.join(ROOT, "vox0.py"), encoding="utf-8").read()
     start = src.index("MARK_STATES = {")   # the palette the mark reads its colour from
     end   = src.index("TRAY_IDLE", start)
     mod = types.ModuleType("_logo_drawing")
     mod.__dict__.update(Image=Image, ImageDraw=ImageDraw)
-    exec(compile(src[start:end], "kara.py", "exec"), mod.__dict__)
+    exec(compile(src[start:end], "vox0.py", "exec"), mod.__dict__)
     return mod._make_tray_icon
 
 
@@ -75,7 +75,7 @@ def main():
     card.paste(mark, (510, 90), mark)
     d = ImageDraw.Draw(card)
     for text, y, size, fill in (
-        ("Kara",                     400, 64, (255, 255, 255)),
+        ("Vox0",                     400, 64, (255, 255, 255)),
         ("Hold a key, speak, and it types.",   490, 30, (204, 204, 204)),
         ("Runs offline on Windows",            540, 26, (153, 153, 153)),
     ):

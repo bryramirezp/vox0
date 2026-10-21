@@ -175,8 +175,8 @@ section { padding: 92px 0; border-top: 1px solid var(--line); }
 }
 
 /* ── The redrawn window ────────────────────────────────────────────────────
-   Kara's own chrome, redrawn -- not the site's panel colours, the exact ones
-   from kara.py's THEMES (bg_root/bg_header/text_title/log_dim/rec_status_text
+   Vox0's own chrome, redrawn -- not the site's panel colours, the exact ones
+   from vox0.py's THEMES (bg_root/bg_header/text_title/log_dim/rec_status_text
    etc.), so it reads as the app rather than as a page decoration wearing its
    colours. Still a drawing, not a screenshot: what makes that honest is that
    demo.js only ever plays back a real capture (tools/capture_demo.py) with
@@ -418,7 +418,7 @@ footer { border-top: 1px solid var(--line); padding: 40px 0 60px; color: var(--q
 }
 /* The button the reader is being told to press. */
 .win-btn.go { background: var(--w-blue); border-color: var(--w-blue); color: #fff; font-weight: 600; }
-/* Kara's own installer is Inno Setup, whose wizard is wider and has a task list. */
+/* Vox0's own installer is Inno Setup, whose wizard is wider and has a task list. */
 .win.wizard { max-width: 540px; }
 .win .task { display: flex; align-items: flex-start; gap: 9px; margin: 0 0 10px; color: var(--w-text); }
 .win .box {

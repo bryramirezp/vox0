@@ -3,7 +3,7 @@
     py -3 tools/stamp_docs.py           fix the files in place
     py -3 tools/stamp_docs.py --check   fail if any of them is stale
 
-The version lives in exactly one place, __version__ in kara.py, and the
+The version lives in exactly one place, __version__ in vox0.py, and the
 installer's size is whatever the installer happens to weigh. Everywhere else
 that mentions either is a copy, and copies go stale quietly -- the JSON-LD on
 the website sat at 0.1.0 for three releases before anyone noticed. This walks
@@ -33,16 +33,16 @@ SITE = "https://bryramirezp.github.io/kara/"
 
 
 def version():
-    src = io.open(os.path.join(ROOT, "kara.py"), encoding="utf-8").read()
+    src = io.open(os.path.join(ROOT, "vox0.py"), encoding="utf-8").read()
     m = re.search(r'^__version__\s*=\s*"([^"]+)"', src, re.M)
     if not m:
-        sys.exit("no __version__ found in kara.py")
+        sys.exit("no __version__ found in vox0.py")
     return m.group(1)
 
 
-def installer_mb(ver):
+def installer_mb(ver, brand="Vox0"):
     """Megabytes, rounded the way a person would say it out loud."""
-    path = os.path.join(ROOT, "dist", "Kara-Setup-%s.exe" % ver)
+    path = os.path.join(ROOT, "dist", "%s-Setup-%s.exe" % (brand, ver))
     if not os.path.exists(path):
         return None
     return round(os.path.getsize(path) / 1_000_000)
@@ -72,7 +72,7 @@ def last_commit_date(rel_path):
     return datetime.date.today().isoformat()
 
 
-def rules(ver, mb):
+def rules(ver, mb, brand="Vox0"):
     """(file, pattern, replacement) triples, applied in order.
 
     Each pattern is anchored on something structural -- a JSON key, an XML tag,
@@ -89,6 +89,10 @@ def rules(ver, mb):
         ("docs/index.html",
          r"(<!--app-version-->)[^<]*(<!--/app-version-->)",
          r"\g<1>%s\g<2>" % ver),
+
+        ("docs/index.html",
+         r"(<!--app-name-->)[^<]*(<!--/app-name-->)",
+         r"\g<1>%s\g<2>" % brand),
 
         # Only the hand-run fallback: build.py passes /DAppVersion, which wins.
         ("packaging/installer.iss",
@@ -114,9 +118,9 @@ def rules(ver, mb):
     # the thirty-four lines in between.
     #
     URL = (r"(https://github\.com/bryramirezp/kara/releases/download/)"
-           r"v[^/\s\"')]+(/Kara-Setup(?:-GPU)?-)[^\s\"')]+(\.exe)")
+           r"v[^/\s\"')]+/(?:Kara|Vox0)-Setup(-GPU)?-[^\s\"')]+(\.exe)")
     for rel in ("README.md", "docs/index.html", "docs/install.html"):
-        r.append((rel, URL, r"\g<1>v%s\g<2>%s\g<3>" % (ver, ver)))
+        r.append((rel, URL, r"\g<1>v%s/%s-Setup\g<2>-%s\g<3>" % (ver, brand, ver)))
 
     # The installer's name in prose, which is not the same thing as the link.
     # Versioning the links and leaving the words alone left the install guide
@@ -125,16 +129,16 @@ def rules(ver, mb):
     # on a file its own button had just saved under a different name. That
     # command is the answer the page gives to "how do I know this is safe", so
     # it failing with a path error is worse than the size being a megabyte out.
-    NAME = r"(Kara-Setup(?:-GPU)?-)\d+\.\d+\.\d+(\.exe)"
+    NAME = r"(?:Kara|Vox0)-Setup(-GPU)?-\d+\.\d+\.\d+(\.exe)"
     for rel in ("README.md", "docs/index.html", "docs/install.html"):
-        r.append((rel, NAME, r"\g<1>%s\g<2>" % ver))
+        r.append((rel, NAME, r"%s-Setup\g<1>-%s\g<2>" % (brand, ver)))
 
     # And the one machine-readable link that was still pointing at the floating
     # "latest" while every button on the page had moved to a fixed version.
     r.append(("docs/index.html",
               r'("downloadUrl": ")[^"]*(")',
               r"\g<1>https://github.com/bryramirezp/kara/releases/download/"
-              r"v%s/Kara-Setup-%s.exe\g<2>" % (ver, ver)))
+              r"v%s/%s-Setup-%s.exe\g<2>" % (ver, brand, ver)))
 
     if mb is not None:
         size = "%d MB" % mb
@@ -173,15 +177,19 @@ def main():
     args = ap.parse_args()
 
     ver = version()
-    mb  = installer_mb(ver)
-    print("Kara %s%s%s" % (
+    # Published versions through 0.3.5 keep Kara's immutable download names.
+    brand = "Kara" if tuple(map(int, ver.split("."))) <= (0, 3, 5) else "Vox0"
+    if os.path.exists(os.path.join(ROOT, "dist", "Vox0-Setup-%s.exe" % ver)):
+        brand = "Vox0"
+    mb = installer_mb(ver, brand)
+    print("Vox0 %s%s%s" % (
         ver,
         "" if mb is None else ", installer %d MB" % mb,
         ""))
     if mb is None:
         print("  (no versioned installer in dist/ -- leaving the size alone)")
     pending = {}
-    for rel, pattern, repl in rules(ver, mb):
+    for rel, pattern, repl in rules(ver, mb, brand):
         path = os.path.join(ROOT, rel)
         text = pending.get(rel)
         if text is None:

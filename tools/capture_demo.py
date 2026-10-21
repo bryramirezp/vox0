@@ -2,9 +2,9 @@
 
     py -3 tools/capture_demo.py
 
-Launches Kara for real -- your own mic, your own model, your own machine.
+Launches Vox0 for real -- your own mic, your own model, your own machine.
 Hold your hotkey, say one natural sentence out loud, let go, and close the
-app once you're happy with what landed. This then saves what Kara actually
+app once you're happy with what landed. This then saves what Vox0 actually
 recorded and transcribed -- the loudness envelope, the real text, the real
 gap before the paste -- to docs/demo-data.json.
 
@@ -23,13 +23,13 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "docs", "demo-data.json")
 
 
-def _kara_python():
-    """The interpreter Kara's own dependencies live in, not whichever one is
+def _vox0_python():
+    """The interpreter Vox0's own dependencies live in, not whichever one is
     running this script -- same lookup as launch.bat. Whatever ran this file
     (a bare `py -3`, say) may be a different Python with no numpy/faster-
     whisper installed at all.
     """
-    for var in ("KARA_PYTHON", "DICTATION_PYTHON"):
+    for var in ("VOX0_PYTHON", "KARA_PYTHON", "DICTATION_PYTHON"):
         exe = os.environ.get(var)
         if exe and os.path.exists(exe):
             return exe
@@ -37,21 +37,21 @@ def _kara_python():
 
 
 def main():
-    fd, capture_path = tempfile.mkstemp(suffix=".json", prefix="kara-capture-")
+    fd, capture_path = tempfile.mkstemp(suffix=".json", prefix="vox0-capture-")
     os.close(fd)
-    os.remove(capture_path)  # kara.py only writes here after a real dictation
+    os.remove(capture_path)  # vox0.py only writes here after a real dictation
 
     env = dict(os.environ)
-    env["KARA_CAPTURE_DEMO"] = capture_path
+    env["VOX0_CAPTURE_DEMO"] = capture_path
 
-    exe = _kara_python()
-    print("Launching Kara...")
+    exe = _vox0_python()
+    print("Launching Vox0...")
     print("Hold your hotkey, say a sentence, let go, wait for it to paste.")
     print("Don't like it? Say it again right there, same window -- no need "
-          "to close and restart. Only close Kara once you're happy with the "
+          "to close and restart. Only close Vox0 once you're happy with the "
           "last thing you said. That's the one this keeps.\n")
 
-    subprocess.run([exe, os.path.join(ROOT, "kara.py")],
+    subprocess.run([exe, os.path.join(ROOT, "vox0.py")],
                    cwd=ROOT, env=env, check=False)
 
     if not os.path.exists(capture_path):

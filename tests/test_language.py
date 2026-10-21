@@ -3,52 +3,52 @@ import json
 
 import pytest
 
-import karai18n
+import vox0i18n
 
 
-def test_new_settings_and_installer_seed(kara):
-    assert kara.load_settings()["language"] == "auto"
-    for ui in kara.LANGUAGE_CODES:
-        with open(kara.SETTINGS_FILE, "w") as f:
+def test_new_settings_and_installer_seed(vox0):
+    assert vox0.load_settings()["language"] == "auto"
+    for ui in vox0.LANGUAGE_CODES:
+        with open(vox0.SETTINGS_FILE, "w") as f:
             json.dump({"ui_language": ui}, f)
-        settings = kara.load_settings()
+        settings = vox0.load_settings()
         assert settings["language"] == "auto"
         assert settings["ui_language"] == ui
 
 
 @pytest.mark.parametrize("language", ["auto", "es", "en", "pt", "fr", "de", "it"])
-def test_language_and_text_preferences_round_trip(kara, language):
-    settings = dict(kara.DEFAULT_SETTINGS, language=language, numbers="words", commands="all")
-    kara.save_settings(settings)
-    loaded = kara.load_settings()
+def test_language_and_text_preferences_round_trip(vox0, language):
+    settings = dict(vox0.DEFAULT_SETTINGS, language=language, numbers="words", commands="all")
+    vox0.save_settings(settings)
+    loaded = vox0.load_settings()
     assert loaded["language"] == language
     assert (loaded["numbers"], loaded["commands"]) == ("words", "all")
 
 
 @pytest.mark.parametrize("language", [None, "unknown", "", "AUTO"])
-def test_invalid_dictation_setting_defaults_to_auto(kara, language):
-    assert kara._migrate(dict(kara.DEFAULT_SETTINGS, language=language))["language"] == "auto"
+def test_invalid_dictation_setting_defaults_to_auto(vox0, language):
+    assert vox0._migrate(dict(vox0.DEFAULT_SETTINGS, language=language))["language"] == "auto"
 
 
 @pytest.mark.parametrize("ui", [None, "auto", "unknown"])
-def test_automatic_never_becomes_ui_language(kara, ui):
-    settings = kara._migrate(dict(kara.DEFAULT_SETTINGS, language="auto", ui_language=ui))
+def test_automatic_never_becomes_ui_language(vox0, ui):
+    settings = vox0._migrate(dict(vox0.DEFAULT_SETTINGS, language="auto", ui_language=ui))
     assert settings["ui_language"] == "es"
-    settings = kara._migrate(dict(kara.DEFAULT_SETTINGS, language="en", ui_language=ui))
+    settings = vox0._migrate(dict(vox0.DEFAULT_SETTINGS, language="en", ui_language=ui))
     assert settings["ui_language"] == "en"
-    assert "auto" not in kara.LANGUAGE_CODES
+    assert "auto" not in vox0.LANGUAGE_CODES
 
 
-def test_all_ui_languages_have_translated_auto_and_help(kara):
-    keys = set(karai18n.STRINGS["en"])
-    for ui, strings in karai18n.STRINGS.items():
+def test_all_ui_languages_have_translated_auto_and_help(vox0):
+    keys = set(vox0i18n.STRINGS["en"])
+    for ui, strings in vox0i18n.STRINGS.items():
         assert set(strings) == keys
-        karai18n.set_language(ui)
-        label = kara.language_name("auto")
+        vox0i18n.set_language(ui)
+        label = vox0.language_name("auto")
         assert label == strings["language_auto"]
-        assert kara.language_code(label) == "auto"
-        assert strings["hint_text_auto"]
-    karai18n.set_language("es")
+        assert vox0.language_code(label) == "auto"
+        assert strings["hint_language"]
+    vox0i18n.set_language("es")
 
 
 def test_auto_redetects_each_recording_without_changing_settings(pipeline):
@@ -94,7 +94,7 @@ def test_fixed_language_retains_prompt_and_polish(pipeline, language, said, expe
     opts = pipeline.model.transcribe.call_args.kwargs
     assert opts["language"] == language
     assert opts["multilingual"] is False
-    assert opts["initial_prompt"] == pipeline.app.karatext.style_prompt(language)
+    assert opts["initial_prompt"] == pipeline.app.vox0text.style_prompt(language)
     assert ("log", expected, "said") in events
 
 
@@ -113,23 +113,23 @@ def test_silence_and_empty_results_do_not_paste(pipeline):
     p.app.pyautogui.hotkey.assert_not_called()
 
 
-def test_mouse_hotkey_records_trace_timing(kara, monkeypatch):
+def test_mouse_hotkey_records_trace_timing(vox0, monkeypatch):
     from unittest.mock import Mock
 
     start_recording = Mock()
     stop_and_transcribe = Mock()
-    monkeypatch.setattr(kara, "_current_hotkey_str", "mouse:x2")
-    monkeypatch.setattr(kara, "_may_record", lambda: True)
-    monkeypatch.setattr(kara, "start_recording", start_recording)
-    monkeypatch.setattr(kara, "stop_and_transcribe", stop_and_transcribe)
-    monkeypatch.setattr(kara, "_trigger_down", False)
-    monkeypatch.setattr(kara, "recording", False)
+    monkeypatch.setattr(vox0, "_current_hotkey_str", "mouse:x2")
+    monkeypatch.setattr(vox0, "_may_record", lambda: True)
+    monkeypatch.setattr(vox0, "start_recording", start_recording)
+    monkeypatch.setattr(vox0, "stop_and_transcribe", stop_and_transcribe)
+    monkeypatch.setattr(vox0, "_trigger_down", False)
+    monkeypatch.setattr(vox0, "recording", False)
 
-    kara.on_mouse_click(0, 0, kara.Button.x2, True)
-    kara.on_mouse_click(0, 0, kara.Button.x2, False)
+    vox0.on_mouse_click(0, 0, vox0.Button.x2, True)
+    vox0.on_mouse_click(0, 0, vox0.Button.x2, False)
 
-    kara.trace.start.assert_called_once_with()
-    kara.trace.mark.assert_called_once_with("hold")
+    vox0.trace.start.assert_called_once_with()
+    vox0.trace.mark.assert_called_once_with("hold")
     start_recording.assert_called_once_with()
     stop_and_transcribe.assert_called_once_with()
 

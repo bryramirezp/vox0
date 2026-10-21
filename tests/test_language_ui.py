@@ -1,4 +1,4 @@
-"""Opt-in real Tk widget checks: set KARA_TEST_UI=1 on an interactive desktop."""
+"""Opt-in real Tk widget checks: set VOX0_TEST_UI=1 on an interactive desktop."""
 import os
 from pathlib import Path
 import subprocess
@@ -6,7 +6,7 @@ import sys
 
 import pytest
 
-pytestmark = pytest.mark.skipif(os.environ.get("KARA_TEST_UI") != "1",
+pytestmark = pytest.mark.skipif(os.environ.get("VOX0_TEST_UI") != "1",
                                 reason="Opt-in Windows UI tests")
 
 
@@ -28,17 +28,19 @@ def assert_header_drag(app, frame):
     header._canvas.event_generate("<ButtonRelease-1>", x=130, y=10)
 
 
-def test_settings_widgets_save_reload_and_localize(kara, monkeypatch):
+def test_settings_widgets_save_reload_and_localize(vox0, monkeypatch):
     # No microphone, global listeners, tray, real model or user settings.
-    monkeypatch.setattr(kara, "list_input_devices", lambda: [])
-    monkeypatch.setattr(kara, "current_mic_name", lambda: "Test microphone")
-    monkeypatch.setattr(kara.KaraApp, "_fill_hw_info", lambda self: None)
-    monkeypatch.setattr(kara.KaraApp, "_reload_model", lambda self: None)
+    monkeypatch.setattr(vox0, "list_input_devices", lambda: [])
+    monkeypatch.setattr(vox0, "current_mic_name", lambda: "Test microphone")
+    monkeypatch.setattr(vox0.Vox0App, "_fill_hw_info", lambda self: None)
+    monkeypatch.setattr(vox0.Vox0App, "_reload_model", lambda self: None)
+    vox0.save_settings(dict(vox0.DEFAULT_SETTINGS, numbers="words", commands="all"))
     windows = []
     try:
-        app = kara.KaraApp()
+        app = vox0.Vox0App()
         windows.append(app)
         app.update()
+        assert app.title() == "Vox0"
         assert_header_drag(app, app._main_frame)
         logo = app._dot.cget("image")
         assert logo.cget("light_image").getpixel((48, 48))[:3] == (232, 232, 232)
@@ -53,94 +55,94 @@ def test_settings_widgets_save_reload_and_localize(kara, monkeypatch):
         app.update()
         assert_header_drag(app, app._settings_frame)
         assert app._lang_var.get() == "Automático"
-        assert state(app._numbers_seg) == "disabled"
-        assert state(app._commands_seg) == "disabled"
-        for seg, variable in ((app._numbers_seg, app._numbers_var),
-                              (app._commands_seg, app._commands_var)):
+        assert not hasattr(app, "_numbers_seg")
+        assert not hasattr(app, "_commands_seg")
+        for seg, variable in ((app._theme_seg, app._theme_var),
+                              (app._device_seg, app._device_var)):
             for value, button in seg._buttons_dict.items():
                 expected = app.theme["text_on_accent" if value == variable.get()
                                      else "text_on_button"]
-                assert button.cget("text_color_disabled") == expected
+                assert button.cget("text_color") == expected
         assert "Automático" not in app._ui_lang_menu.cget("values")
 
         app._lang_var.set("Spanish")
         app.update()
-        assert state(app._numbers_seg) == "normal"
-        app._numbers_var.set("words")
-        app._commands_var.set("all")
+        assert state(app._device_seg) == "normal"
         app._lang_var.set("Automático")
         app._apply_settings()
-        assert kara.load_settings()["language"] == "auto"
-        assert kara.load_settings()["numbers"] == "words"
-        assert kara.load_settings()["commands"] == "all"
+        assert vox0.load_settings()["language"] == "auto"
+        assert vox0.load_settings()["numbers"] == "words"
+        assert vox0.load_settings()["commands"] == "all"
 
         app._on_ui_language_change("English")
         app.update()
         assert app._lang_var.get() == "Automatic"
-        assert state(app._numbers_seg) == "disabled"
-        assert state(app._commands_seg) == "disabled"
+        assert not hasattr(app, "_numbers_seg")
+        assert not hasattr(app, "_commands_seg")
         app._on_theme_change("light")
         app.update()
         assert app._lang_var.get() == "Automatic"
 
-        for ui in kara.LANGUAGE_CODES:
-            app._on_ui_language_change(kara.LANGUAGE_NAMES[ui])
+        for ui in vox0.LANGUAGE_CODES:
+            app._on_ui_language_change(vox0.LANGUAGE_NAMES[ui])
             app.update()
-            assert app._lang_var.get() == kara.karai18n.STRINGS[ui]["language_auto"]
+            assert app._lang_var.get() == vox0.vox0i18n.STRINGS[ui]["language_auto"]
             assert app._lang_var.get() not in app._ui_lang_menu.cget("values")
-            assert state(app._numbers_seg) == "disabled"
+            assert not hasattr(app, "_numbers_seg")
+            assert not hasattr(app, "_commands_seg")
 
         app._lang_var.set("English")
-        assert state(app._numbers_seg) == "normal"
-        assert app._numbers_var.get() == "words"
-        assert app._commands_var.get() == "all"
+        assert state(app._device_seg) == "normal"
+        assert app._settings["numbers"] == "words"
+        assert app._settings["commands"] == "all"
         app._apply_settings()
-        assert kara.load_settings()["language"] == "en"
+        assert vox0.load_settings()["language"] == "en"
         # Reload from disk and rebuild the settings widgets in the same Tcl
         # interpreter. Tk image objects cannot cross interpreter lifetimes.
-        app._settings = kara.load_settings()
+        app._settings = vox0.load_settings()
         app._rebuild_ui()
         app.update()
         app._show_settings()
         app.update()
         assert_header_drag(app, app._settings_frame)
         assert app._lang_var.get() == "English"
-        assert app._numbers_var.get() == "words"
-        assert app._commands_var.get() == "all"
-        assert state(app._numbers_seg) == "normal"
+        assert app._settings["numbers"] == "words"
+        assert app._settings["commands"] == "all"
+        assert not hasattr(app, "_numbers_seg")
+        assert not hasattr(app, "_commands_seg")
     finally:
         for window in windows:
             window.destroy()
-        kara._mark_cache.clear()
-        kara.karai18n.set_language("es")
+        vox0._mark_cache.clear()
+        vox0.vox0i18n.set_language("es")
 
 
 @pytest.mark.parametrize("language", ["auto", "en"])
-def test_settings_in_fresh_app_process(kara, language, tmp_path):
-    kara.save_settings(dict(kara.DEFAULT_SETTINGS, language=language,
+def test_settings_in_fresh_app_process(vox0, language, tmp_path):
+    vox0.save_settings(dict(vox0.DEFAULT_SETTINGS, language=language,
                             ui_language="en", numbers="words", commands="all"))
     env = dict(os.environ, LOCALAPPDATA=str(tmp_path / "appdata"), HF_HUB_OFFLINE="1",
-               KARA_TEST_SETTINGS=kara.SETTINGS_FILE, KARA_TEST_LANGUAGE=language)
+               VOX0_TEST_SETTINGS=vox0.SETTINGS_FILE, VOX0_TEST_LANGUAGE=language)
     code = '''
 import ctypes, os
 from unittest.mock import patch
 with patch.object(ctypes.windll.kernel32, "CreateMutexW", return_value=0), \\
      patch.object(ctypes.windll.kernel32, "GetLastError", return_value=0):
-    import kara
-kara.SETTINGS_FILE = os.environ["KARA_TEST_SETTINGS"]
-kara.karai18n.set_language("en")
-kara.list_input_devices = lambda: []
-kara.KaraApp._fill_hw_info = lambda self: None
-app = kara.KaraApp()
+    import vox0
+vox0.SETTINGS_FILE = os.environ["VOX0_TEST_SETTINGS"]
+vox0.vox0i18n.set_language("en")
+vox0.list_input_devices = lambda: []
+vox0.Vox0App._fill_hw_info = lambda self: None
+app = vox0.Vox0App()
 try:
     app.update()
-    automatic = os.environ["KARA_TEST_LANGUAGE"] == "auto"
+    automatic = os.environ["VOX0_TEST_LANGUAGE"] == "auto"
     assert app._lang_var.get() == ("Automatic" if automatic else "English")
-    assert app._numbers_var.get() == "words"
-    assert app._commands_var.get() == "all"
+    assert app._settings["numbers"] == "words"
+    assert app._settings["commands"] == "all"
     assert app._ui_lang_var.get() == "English"
-    assert all(b.cget("state") == ("disabled" if automatic else "normal")
-               for b in app._numbers_seg._buttons_dict.values())
+    assert not hasattr(app, "_numbers_seg")
+    assert not hasattr(app, "_commands_seg")
 finally:
     app.destroy()
 '''

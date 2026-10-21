@@ -1,4 +1,4 @@
-"""Tests for karatext.
+"""Tests for vox0text.
 
 The cases that matter most are the ones two beta testers ran into by accident,
 and the ones a Spanish speaker would run into the moment the feature shipped: the
@@ -14,7 +14,7 @@ import pytest
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from karatext import (fix_caps_and_spacing, polish, spoken_commands,
+from vox0text import (fix_caps_and_spacing, polish, spoken_commands,
                       style_prompt, words_to_digits)
 
 

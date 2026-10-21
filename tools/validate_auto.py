@@ -8,7 +8,7 @@ Prerequisite (test tooling ONLY, never an app dependency):
 
 --prepare downloads two public Piper voices and synthesizes scripted speech.
 Evaluation only uses cached Whisper models. No microphone, clipboard, desktop
-input, telemetry upload or changes to the user's Kara settings. Mixed clips
+input, telemetry upload or changes to the user's Vox0 settings. Mixed clips
 join two synthetic speakers; they do NOT prove natural single-speaker switching.
 """
 import argparse
@@ -171,19 +171,19 @@ def load_app():
     os.environ["LOCALAPPDATA"] = str(OUT / "appdata")
     with patch.object(ctypes.windll.kernel32, "CreateMutexW", return_value=0), \
          patch.object(ctypes.windll.kernel32, "GetLastError", return_value=0):
-        import kara
-    return kara
+        import vox0
+    return vox0
 
 
 def evaluate(args):
     import numpy as np
-    kara = load_app()
-    model = kara.WhisperModel(args.model, device=args.device,
+    vox0 = load_app()
+    model = vox0.WhisperModel(args.model, device=args.device,
                              compute_type="int8" if args.device == "cpu" else "float16",
-                             cpu_threads=kara.cpu_thread_count(), local_files_only=True)
-    kara.model_obj = model
-    kara.model_device = args.device
-    kara.model_threads = kara.cpu_thread_count()
+                             cpu_threads=vox0.cpu_thread_count(), local_files_only=True)
+    vox0.model_obj = model
+    vox0.model_device = args.device
+    vox0.model_threads = vox0.cpu_thread_count()
     corpus = json.loads((OUT / "corpus.json").read_text(encoding="utf-8"))
     report = {"device": args.device, "model": args.model,
               "versions": {p: importlib.metadata.version(p) for p in ("faster-whisper", "ctranslate2", "numpy")},
@@ -201,7 +201,7 @@ def evaluate(args):
             continue
         audio = decode_audio(str(OUT / (case["name"] + ".wav")))
         for mode in ("initial", "multilingual"):
-            kara.app_settings = dict(kara.DEFAULT_SETTINGS, language="auto")
+            vox0.app_settings = dict(vox0.DEFAULT_SETTINGS, language="auto")
             captured = []
             detected = {}
             real_transcribe = model.transcribe
@@ -215,20 +215,20 @@ def evaluate(args):
                                 duration_after_vad=info.duration_after_vad)
                 return segments, info
 
-            # Run Kara's real preprocessing, inference, cleanup and queue path.
+            # Run Vox0's real preprocessing, inference, cleanup and queue path.
             # Only replace the external clipboard/keyboard side effects.
             with patch.object(model, "transcribe", side_effect=transcribe), \
-                 patch.object(kara, "_clipboard_has_text", return_value=False), \
-                 patch.object(kara.pyperclip, "copy", side_effect=captured.append), \
-                 patch.object(kara.pyautogui, "hotkey"), \
-                 patch.object(kara.time, "sleep"):
-                kara.trace.start()
+                 patch.object(vox0, "_clipboard_has_text", return_value=False), \
+                 patch.object(vox0.pyperclip, "copy", side_effect=captured.append), \
+                 patch.object(vox0.pyautogui, "hotkey"), \
+                 patch.object(vox0.time, "sleep"):
+                vox0.trace.start()
                 start = time.perf_counter()
-                kara._transcribe(np.array(audio, copy=True), 16000)
+                vox0._transcribe(np.array(audio, copy=True), 16000)
                 elapsed = time.perf_counter() - start
             events = []
-            while not kara.ui_queue.empty():
-                events.append(kara.ui_queue.get_nowait())
+            while not vox0.ui_queue.empty():
+                events.append(vox0.ui_queue.get_nowait())
             text = captured[0] if captured else ""
             row = {"case": case["name"], "mode": mode, "audio_s": case["seconds"],
                    "elapsed_s": round(elapsed, 3), "expected": case["expected"], "text": text,

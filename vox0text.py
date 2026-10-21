@@ -6,7 +6,7 @@ way to know that "punto y aparte" was an instruction rather than something the
 speaker said. This module closes that gap.
 
 Everything here is a pure function of a string. No settings are read, no files
-are touched, nothing is imported from kara.py. That is on purpose: this is the
+are touched, nothing is imported from vox0.py. That is on purpose: this is the
 part of the app most likely to be wrong in ways only a native speaker notices,
 so it has to be the part that is cheapest to test. See tests/test_text.py.
 
@@ -545,7 +545,7 @@ def _open_spanish_marks(text):
     return "".join(out)
 
 
-# ── The one function kara.py calls ────────────────────────────────────────────
+# ── The one function vox0.py calls ────────────────────────────────────────────
 def polish(text, language="es", numbers=True, voice_commands="safe"):
     """Everything above, in the order that works.
 

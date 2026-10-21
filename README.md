@@ -2,17 +2,17 @@
 
 <img src="docs/logo.png" alt="" width="128">
 
-# Kara
+# Vox0
 
 **Free offline Whisper dictation for Windows.**
 Hold a key, speak, and it types for you.
 
 No account, no cloud, no subscription.
 
-<img src="docs/screenshot-main-dark.png" alt="The Kara window, listing sentences that have been dictated" width="300">
+<img src="docs/screenshot-main-dark.png" alt="Vox0 listing dictated sentences" width="300">
 
-[**Download CPU edition**](https://github.com/bryramirezp/kara/releases/download/v0.3.5/Kara-Setup-0.3.5.exe)
- · [**NVIDIA GPU edition**](https://github.com/bryramirezp/kara/releases/download/v0.3.5/Kara-Setup-GPU-0.3.5.exe)
+[**Download CPU edition**](https://github.com/bryramirezp/kara/releases/download/v0.3.6/Vox0-Setup-0.3.6.exe)
+ · [**NVIDIA GPU edition**](https://github.com/bryramirezp/kara/releases/download/v0.3.6/Vox0-Setup-GPU-0.3.6.exe)
  · [Website](https://bryramirezp.github.io/kara/)
  · [What's changed](CHANGELOG.md)
  · [All files](https://github.com/bryramirezp/kara/releases/latest)
@@ -29,29 +29,33 @@ It uses OpenAI's Whisper through
 into text. Transcription happens on your own computer. Your voice is never sent
 anywhere, and you can unplug the internet and it still works.
 
-People usually find this while looking for a **free alternative to Dragon
-NaturallySpeaking**, an **offline speech to text tool for Windows**, or something
-better than **Windows Voice Typing (Win+H)**, which needs an internet connection
-and sends your audio to Microsoft.
+Vox0 is a **free, open source offline alternative to
+[Wispr Flow](https://wisprflow.ai/) for Windows**. Both let you dictate into the
+app you're using. Vox0 runs Whisper 100% locally on your PC and works offline
+after a one-time speech model download, with no account or subscription.
 
-| | Kara | Windows Voice Typing | Dragon | Otter.ai |
-|---|---|---|---|---|
-| Price | Free | Free | Paid | Free tier, then paid |
-| Works offline | Yes | No | Yes | No |
-| Needs an account | No | No | Yes | Yes |
-| Types into any app | Yes | Yes | Yes | No |
-| Voice commands | No | Some | Yes | No |
-| Open source | Yes | No | No | No |
+| Feature | Vox0 | Wispr Flow |
+|---|---|---|
+| Price | Free, no subscription | Free and paid plans |
+| Transcription | On your PC, using Whisper | In the cloud |
+| Works offline | Yes, after downloading the model | No, internet required |
+| Dictation into apps | Yes | Yes |
+| Platforms | Windows 10 and 11 | Mac, Windows, iOS and Android |
+| Text processing | Transcription, punctuation and number formatting | AI cleanup and rewriting |
 
-Dragon is bought mostly for driving a computer by voice, and this does not do
-that. It dictates text, and that part is free and works with no connection.
+Vox0 focuses on local dictation. Flow also offers AI rewriting and cross-device
+features. Compare those features with your needs.
+
+Sources: [Wispr Flow features](https://wisprflow.ai/),
+[cloud transcription and internet requirement](https://docs.wisprflow.ai/articles/4048537120-what-to-expect-from-flow-accuracy-and-known-limitations),
+[plans](https://wisprflow.ai/pricing). Checked October 21, 2026.
 
 ## Download
 
 | Edition | Download | Best for |
 | --- | --- | --- |
-| **CPU — works on any PC** | [Kara-Setup-0.3.5.exe](https://github.com/bryramirezp/kara/releases/download/v0.3.5/Kara-Setup-0.3.5.exe) — <!--dl-size-->74 MB<!--/dl-size--> | Every Windows PC. |
-| **NVIDIA GPU** | [Kara-Setup-GPU-0.3.5.exe](https://github.com/bryramirezp/kara/releases/download/v0.3.5/Kara-Setup-GPU-0.3.5.exe) | NVIDIA graphics card with a current driver; faster transcription. |
+| **CPU — works on any PC** | [Vox0-Setup-0.3.6.exe](https://github.com/bryramirezp/kara/releases/download/v0.3.6/Vox0-Setup-0.3.6.exe) — <!--dl-size-->74 MB<!--/dl-size--> | Every Windows PC. |
+| **NVIDIA GPU** | [Vox0-Setup-GPU-0.3.6.exe](https://github.com/bryramirezp/kara/releases/download/v0.3.6/Vox0-Setup-GPU-0.3.6.exe) | NVIDIA graphics card with a current driver; faster transcription. |
 
 Both editions work on Windows 10 and 11, share your settings and models, and
 install to the same location. Installing one over the other switches editions;
@@ -72,8 +76,8 @@ This happens once. After that it works offline.
 2. Let go. Your words are typed where your cursor is.
 3. Click the **⚙** button to change anything.
 
-Drag either the main window or Settings by its header to move Kara. The header
-shows the Kara logo; the small status circle is green at rest and red while
+Drag either the main window or Settings by its header to move Vox0. The header
+shows the Vox0 logo; the small status circle is green at rest and red while
 recording.
 
 The app hides near the clock. Click that icon to bring it back.
@@ -105,7 +109,7 @@ current driver. It includes the CUDA libraries it needs: no CUDA Toolkit and no
 second download after installation.
 
 **AMD and Intel cards are not supported yet.** ctranslate2, the engine
-underneath, has no backend for them on Windows, so Kara falls back to your
+underneath, has no backend for them on Windows, so Vox0 falls back to your
 processor and there is nothing in Settings that would change that. It is being
 worked on.
 
@@ -132,15 +136,18 @@ launch.bat
 ```
 
 `launch.bat` starts the app with no window. To see errors while you work on it,
-run `py -3 kara.py` instead.
+run `py -3 vox0.py` instead.
 
 If you keep your packages in one specific Python, tell the launcher which one:
 
 ```bat
-setx KARA_PYTHON "C:\Path\To\pythonw.exe"
+setx VOX0_PYTHON "C:\Path\To\pythonw.exe"
 ```
 
 Your settings live in `%LOCALAPPDATA%\Kara\settings.json`.
+Vox0 keeps this legacy directory so existing settings and downloaded models
+remain available. `VOX0_PYTHON` and `VOX0_MACHINE` replace the old `KARA_` names;
+the old environment variables are still accepted.
 
 ### Isolated development environment (Windows)
 
@@ -152,15 +159,15 @@ python -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r requirements.txt pytest
 ```
 
-Exit the installed Kara from its tray icon before starting the source app:
+Exit the installed app from its tray icon before starting the source app:
 
 ```powershell
-.\.venv\Scripts\python.exe kara.py
+.\.venv\Scripts\python.exe vox0.py
 ```
 
 Both editions share settings and allow only one running instance. Restart the
 source app after editing it. For NVIDIA development, install
-`requirements-gpu.txt` instead. `.venv/` and the local `Kara Development.lnk`
+`requirements-gpu.txt` instead. `.venv/` and the local `Vox0 Development.lnk`
 shortcut are ignored by Git.
 
 To rebuild the icons after changing the drawing in the app:
@@ -181,20 +188,26 @@ needs the internet again.
 Yes, and open source under the MIT license. No account, no subscription, no
 trial that runs out.
 
-### Is this a free alternative to Dragon NaturallySpeaking?
+### Is Vox0 a free offline alternative to Wispr Flow?
 
-For dictation, yes. It does not replace Dragon's voice commands for controlling
-Windows by voice.
+Yes, for dictating text into Windows apps. Vox0 runs Whisper entirely on your PC
+and works offline after a one-time speech model download. Wispr Flow transcribes
+in the cloud and needs an internet connection. Vox0 focuses on dictation,
+punctuation and number formatting; it does not offer Flow's AI rewriting or
+cross-device features.
 
 ### How is it different from Windows Voice Typing (Win+H)?
 
-Windows Voice Typing sends your audio to Microsoft and needs a connection. This
-runs on your own machine, works with no connection at all, and lets you pick a
-larger and more accurate model.
+Windows Voice Typing needs an internet connection. Vox0 runs Whisper on your own
+PC and works offline after downloading the speech model. You can choose the
+model according to your hardware and accuracy needs.
 
 ### Which languages does it support?
 
 Spanish, English, Portuguese, French, German and Italian.
+Automatic mode detects the language for each dictation. You can also choose a
+fixed language to improve accuracy on short clips. Mixing languages in one
+recording can cause errors.
 
 ### Do I need a graphics card?
 
@@ -209,11 +222,12 @@ dictations without changing Settings. Mixing languages in one recording can
 cause errors, including omitted or translated passages. Selecting a fixed
 language can improve accuracy, especially on short clips.
 
-Automatic keeps the punctuation and numbers supplied by Whisper. Kara only
+Automatic keeps the punctuation and numbers supplied by Whisper. Vox0 only
 cleans up spacing and capitalization: it does not add Spanish opening marks
-based on the first language detected. Kara's additional number conversions and
-spoken commands described below require a **fixed language**. Their settings
-are preserved while disabled in Automatic.
+based on the first language detected. Vox0's additional number conversions and
+spoken commands described below apply to **fixed Spanish or English**.
+The number-format and spoken-command selectors have been removed from Settings;
+existing formatting preferences are preserved when saving other settings.
 
 Numbers are typed as numbers. Say "one thousand two hundred dollars" and you
 get `1200 dollars`; "three point five" gives `3.5`; "fifty percent" gives
@@ -233,8 +247,8 @@ For punctuation, say the name of the mark:
 
 These are all phrases nobody says by accident. Plain "comma" and "period" are
 ordinary English words -- "the period of time", "the comma goes here" -- so
-they are off by default. Settings -> TEXT has a switch that turns them on, and
-another that turns the whole thing off.
+they are off by default. Earlier saved formatting preferences remain in effect
+for a fixed language.
 
 ## Your privacy
 
@@ -244,12 +258,12 @@ another that turns the whole thing off.
 - The text is pasted with the clipboard, and whatever text you had copied before
   is put back afterwards. An image or a copied file cannot be handed back
   through the clipboard, so in that case the dictated text is left there instead.
-- Kara keeps a log of how long each dictation took, in
+- Vox0 keeps a log of how long each dictation took, in
   `%LOCALAPPDATA%\Kara\trace.jsonl`. It holds timings, model and device
   names, and how many characters came out — never a word of what you said, and
   there is no setting that would make it record that. It is capped at 2 MB and
   the oldest entries are dropped.
-- **Nothing is sent anywhere.** Kara contains no network code beyond downloading
+- **Nothing is sent anywhere.** Vox0 contains no network code beyond downloading
   the speech model on first run. If you ever want to send me that log to explain
   why the app is slow on your machine, Settings → Export diagnostics packs it
   into a zip and opens the folder, and you decide what happens to the file.

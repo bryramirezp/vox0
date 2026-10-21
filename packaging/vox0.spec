@@ -1,8 +1,8 @@
 # -*- mode: python ; coding: utf-8 -*-
-"""PyInstaller build for Kara.
+"""PyInstaller build for Vox0.
 
-    py -3 -m PyInstaller --noconfirm packaging/kara.spec
-    set KARA_GPU=1 && py -3 -m PyInstaller ... packaging/kara.spec
+    py -3 -m PyInstaller --noconfirm packaging/vox0.spec
+    set VOX0_GPU=1 && py -3 -m PyInstaller ... packaging/vox0.spec
 
 The normal build is the small CPU application.  The GPU invocation produces a
 second, self-contained NVIDIA installer.
@@ -19,8 +19,8 @@ from PyInstaller.utils.hooks import (collect_all, collect_data_files,
                                      collect_dynamic_libs)
 
 ROOT = os.path.abspath(os.path.join(SPECPATH, ".."))
-GPU = bool(os.environ.get("KARA_GPU"))
-print("== Kara spec: %s build ==" % ("GPU" if GPU else "processor-only"))
+GPU = bool(os.environ.get("VOX0_GPU") or os.environ.get("KARA_GPU"))
+print("== Vox0 spec: %s build ==" % ("GPU" if GPU else "processor-only"))
 
 datas = [
     (os.path.join(ROOT, "assets", "icon.ico"), "assets"),
@@ -29,7 +29,7 @@ binaries = []
 hiddenimports = []
 
 # Python 3.11 on Windows can report a valid Tcl/Tk installation as broken to
-# PyInstaller's hook.  Kara imports CustomTkinter at startup, so ship the
+# PyInstaller's hook.  Vox0 imports CustomTkinter at startup, so ship the
 # standard-library modules, DLLs and script directories explicitly.
 PYTHON_ROOT = sys.base_prefix
 TCL_DIR = next((p for p in glob.glob(os.path.join(PYTHON_ROOT, "tcl", "tcl*"))
@@ -70,7 +70,7 @@ def nvidia_dlls():
     """The CUDA DLLs, keeping the nvidia/<lib>/bin shape the wheels ship them in.
 
     collect_dynamic_libs would flatten them into one directory. The shape is not
-    decoration: kara._add_nvidia_dlls walks exactly this layout to hand each
+    decoration: vox0._add_nvidia_dlls walks exactly this layout to hand each
     folder to os.add_dll_directory, which since Python 3.8 is the only way an
     extension module finds a DLL at all. Flattened, ctranslate2 would fail to
     load a model with a message naming cublas64_12.dll, in a build that is
@@ -90,7 +90,7 @@ def nvidia_dlls():
                 found.append((dll, dest))
     if not found:
         raise SystemExit(
-            "KARA_GPU is set but no NVIDIA wheels were found.\n"
+            "VOX0_GPU is set but no NVIDIA wheels were found.\n"
             "  pip install -r requirements-gpu.txt")
     print("   %d CUDA DLLs" % len(found))
     return found
@@ -110,7 +110,7 @@ if not GPU:
     EXCLUDES.append("nvidia")
 
 a = Analysis(
-    [os.path.join(ROOT, "kara.py")],
+    [os.path.join(ROOT, "vox0.py")],
     pathex=[ROOT],
     binaries=binaries,
     datas=datas,
@@ -127,7 +127,7 @@ exe = EXE(
     pyz,
     a.scripts,
     exclude_binaries=True,
-    name="Kara",
+    name="Vox0",
     debug=False,
     strip=False,
     upx=False,          # UPX-packed binaries trip antivirus heuristics
@@ -141,5 +141,5 @@ coll = COLLECT(
     a.datas,
     strip=False,
     upx=False,
-    name="Kara",
+    name="Vox0",
 )

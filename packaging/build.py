@@ -3,14 +3,14 @@
     py -3 packaging/build.py                   build CPU and NVIDIA installers
 
 Leaves in dist/:
-    Kara-Setup-<version>.exe          CPU installer
-    Kara-Setup-GPU-<version>.exe      NVIDIA installer
+    Vox0-Setup-<version>.exe          CPU installer
+    Vox0-Setup-GPU-<version>.exe      NVIDIA installer
     SHA256SUMS.txt                    hashes of both installers
 
-The version is read from __version__ in kara.py, which is the only
+The version is read from __version__ in vox0.py, which is the only
 place it is written down.
 
-The two builds cannot share a dist/Kara directory, so run them one at a time;
+The two builds cannot share a dist/Vox0 directory, so run them one at a time;
 each starts by clearing what the other left.
 """
 import hashlib
@@ -23,7 +23,7 @@ import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DIST = os.path.join(ROOT, "dist")
-APP  = os.path.join(DIST, "Kara")
+APP  = os.path.join(DIST, "Vox0")
 
 # winget installs Inno Setup per user by default, the GitHub runners get it
 # machine-wide through choco, and either way someone may just have it on PATH.
@@ -38,10 +38,10 @@ ISCC_CANDIDATES = [
 
 
 def version():
-    src = open(os.path.join(ROOT, "kara.py"), encoding="utf-8").read()
+    src = open(os.path.join(ROOT, "vox0.py"), encoding="utf-8").read()
     m = re.search(r'^__version__\s*=\s*"([^"]+)"', src, re.M)
     if not m:
-        sys.exit("no __version__ found in kara.py")
+        sys.exit("no __version__ found in vox0.py")
     return m.group(1)
 
 
@@ -53,19 +53,20 @@ def run(cmd, env=None):
 def build_exe(gpu):
     print("== PyInstaller ==")
     env = dict(os.environ)
+    env.pop("KARA_GPU", None)
     if gpu:
-        env["KARA_GPU"] = "1"
+        env["VOX0_GPU"] = "1"
     else:
         # Explicitly cleared rather than merely absent: a shell where it was set
         # for an earlier build would otherwise produce the 570 MB file under
         # the small one's name, and nothing downstream would notice.
-        env.pop("KARA_GPU", None)
+        env.pop("VOX0_GPU", None)
     # The previous flavour's files are still in there and PyInstaller does not
     # remove what it no longer produces.
     shutil.rmtree(APP, ignore_errors=True)
     run([sys.executable, "-m", "PyInstaller", "--clean", "--noconfirm",
-         os.path.join("packaging", "kara.spec")], env=env)
-    exe = os.path.join(APP, "Kara.exe")
+         os.path.join("packaging", "vox0.spec")], env=env)
+    exe = os.path.join(APP, "Vox0.exe")
     if not os.path.exists(exe):
         sys.exit(f"expected {exe}")
     nvidia = os.path.join(APP, "_internal", "nvidia")
@@ -77,23 +78,23 @@ def build_exe(gpu):
 def sign_artifact(path):
     """Run the maintainer-provided Authenticode command, if configured.
 
-    KARA_SIGN_COMMAND must contain ``{file}``; keeping the certificate command
+    VOX0_SIGN_COMMAND must contain ``{file}``; keeping the certificate command
     outside Git avoids putting a PFX, password or provider credentials in this
     repository.  A production release should set it to a SignTool command with
     SHA-256 and an RFC 3161 timestamp.
     """
-    command = os.environ.get("KARA_SIGN_COMMAND")
+    command = os.environ.get("VOX0_SIGN_COMMAND") or os.environ.get("KARA_SIGN_COMMAND")
     if not command:
         return False
     if "{file}" not in command:
-        sys.exit("KARA_SIGN_COMMAND must contain {file}")
+        sys.exit("VOX0_SIGN_COMMAND must contain {file}")
     run([part.replace("{file}", path) for part in shlex.split(command)])
     return True
 
 
 def setup_path(ver, gpu):
     suffix = "-GPU" if gpu else ""
-    return os.path.join(DIST, f"Kara-Setup{suffix}-{ver}.exe")
+    return os.path.join(DIST, f"Vox0-Setup{suffix}-{ver}.exe")
 
 
 def build_installer(ver, signed, gpu):
@@ -107,8 +108,9 @@ def build_installer(ver, signed, gpu):
         cmd.append("/DGpuBuild=1")
     if signed:
         # Inno uses the same provider command to sign setup.exe and unins*.exe.
-        inno_command = os.environ["KARA_SIGN_COMMAND"].replace("{file}", "$f")
-        cmd.extend(["/DSignKara=1", f"/Skara={inno_command}"])
+        command = os.environ.get("VOX0_SIGN_COMMAND") or os.environ["KARA_SIGN_COMMAND"]
+        inno_command = command.replace("{file}", "$f")
+        cmd.extend(["/DSignVox0=1", f"/Svox0={inno_command}"])
     run(cmd + [os.path.join("packaging", "installer.iss")])
 
 
@@ -139,16 +141,16 @@ def stamp_docs():
 
 def main():
     ver = version()
-    print(f"Kara {ver}\n")
+    print(f"Vox0 {ver}\n")
 
     # Each installer is compiled immediately after its matching application
     # payload, so the CPU installer cannot inherit CUDA from the GPU build.
     build_exe(False)
-    signed = sign_artifact(os.path.join(APP, "Kara.exe"))
+    signed = sign_artifact(os.path.join(APP, "Vox0.exe"))
     build_installer(ver, signed, False)
 
     build_exe(True)
-    signed = sign_artifact(os.path.join(APP, "Kara.exe"))
+    signed = sign_artifact(os.path.join(APP, "Vox0.exe"))
     build_installer(ver, signed, True)
 
     cpu_setup = setup_path(ver, False)

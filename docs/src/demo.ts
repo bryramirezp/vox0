@@ -4,7 +4,7 @@
 // this script -- whenever real data isn't there or reduced motion is asked
 // for. Never invents text or wording: the log lines and status words below
 // ("Recorded 3.6s", "WRITING IT DOWN", "READY") are the app's own strings
-// from karai18n.py, not made up for the site. See the comment above .demo in
+// from vox0i18n.py, not made up for the site. See the comment above .demo in
 // index.html.
 (function () {
   "use strict";
@@ -106,9 +106,9 @@
         requestAnimationFrame(frame);
       }
 
-      // The moment the key is let go: Kara's own log gets its "Recorded
+      // The moment the key is let go: Vox0's own log gets its "Recorded
       // 3.6s" line right away, and the status word goes to "WRITING IT
-      // DOWN" while it transcribes -- see kara.py's _set_recording(False).
+      // DOWN" while it transcribes -- see vox0.py's _set_recording(False).
       function endListening(): void {
         anim!.classList.remove("is-listening");
         statusEl!.textContent = "WRITING IT DOWN";
@@ -120,7 +120,7 @@
         schedule(pastePhase, Math.max(150, data.gapMs));
       }
 
-      // Kara pastes the whole sentence at once -- it never types letter by
+      // Vox0 pastes the whole sentence at once -- it never types letter by
       // letter -- so the replay does the same rather than faking a typing
       // effect the app doesn't have.
       function pastePhase(): void {

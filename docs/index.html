@@ -3,17 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Kara — Free Offline Whisper Dictation for Windows</title>
+<title>Vox0 — Free Offline Alternative to Wispr Flow for Windows</title>
 
 <link rel="canonical" href="https://bryramirezp.github.io/kara/">
-<meta name="description" content="Kara is a free, open source Whisper dictation app for Windows. Turn speech into text in any app, locally on your PC. No account, cloud or subscription.">
+<meta name="description" content="Dictate into any Windows app with Whisper running on your PC. Vox0 is a free, open source alternative to Wispr Flow: no cloud, account or subscription.">
 <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
 <meta name="theme-color" content="#0f0f0f">
 
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://bryramirezp.github.io/kara/">
-<meta property="og:title" content="Kara — Free Offline Whisper Dictation for Windows">
-<meta property="og:description" content="Free, open source Whisper dictation for Windows. Hold a key, speak, and it types into any app. Your voice stays on your PC.">
+<meta property="og:title" content="Vox0 — Free Offline Alternative to Wispr Flow for Windows">
+<meta property="og:description" content="Hold a key, speak, and Vox0 types into your Windows app. Free, open source Whisper dictation that runs entirely on your PC after a one-time model download.">
 <meta property="og:image" content="https://bryramirezp.github.io/kara/social-preview.png">
 <meta name="twitter:card" content="summary_large_image">
 
@@ -36,22 +36,23 @@
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "Kara",
+  "name": "Vox0",
+  "alternateName": "Kara",
   "applicationCategory": "UtilitiesApplication",
   "applicationSubCategory": "Speech Recognition",
   "operatingSystem": "Windows 10, Windows 11",
-  "softwareVersion": "0.3.5",
+  "softwareVersion": "0.3.6",
   "url": "https://bryramirezp.github.io/kara/",
-  "downloadUrl": "https://github.com/bryramirezp/kara/releases/download/v0.3.5/Kara-Setup-0.3.5.exe",
+  "downloadUrl": "https://github.com/bryramirezp/kara/releases/download/v0.3.6/Vox0-Setup-0.3.6.exe",
   "codeRepository": "https://github.com/bryramirezp/kara",
   "license": "https://opensource.org/licenses/MIT",
   "isAccessibleForFree": true,
-  "description": "Kara is a free, open source Whisper dictation app for Windows. Hold a key, speak, release, and your speech becomes text in any app. Transcription runs locally on your PC using faster-whisper.",
+  "description": "Vox0 is a free, open source offline alternative to Wispr Flow for Windows. Hold a key, speak, and your words appear in any app. Whisper transcription runs entirely on your PC after a one-time speech model download.",
   "featureList": [
-    "Works fully offline, with no internet connection",
+    "Works fully offline after a one-time speech model download",
     "No account and no subscription",
     "Types into any Windows application",
-    "Six languages: Spanish, English, Portuguese, French, German, Italian",
+    "Automatic language detection or a fixed language: Spanish, English, Portuguese, French, German, Italian",
     "Keeps every sentence you dictate in the window",
     "NVIDIA graphics card acceleration with the NVIDIA GPU edition"
   ],
@@ -69,12 +70,12 @@
       "acceptedAnswer": { "@type": "Answer", "text": "Yes. The first run downloads the speech model, about 460 MB. After that it never needs the internet again, and your voice is processed entirely on your own machine." } },
     { "@type": "Question", "name": "Is it free?",
       "acceptedAnswer": { "@type": "Answer", "text": "Yes, and it is open source under the MIT license. There is no account, no subscription and no paid tier." } },
-    { "@type": "Question", "name": "Is this a free alternative to Dragon NaturallySpeaking?",
-      "acceptedAnswer": { "@type": "Answer", "text": "For plain dictation, yes. You hold a key, speak, and the text is typed into whatever app you are using. It does not have voice commands for controlling Windows, which is what Dragon is mainly bought for." } },
+    { "@type": "Question", "name": "Is Vox0 a free offline alternative to Wispr Flow?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes, for dictating text into Windows apps. Vox0 runs Whisper entirely on your PC and works offline after a one-time speech model download. Wispr Flow transcribes in the cloud and needs an internet connection. Vox0 focuses on dictation, punctuation and number formatting; it does not offer Flow's AI rewriting or cross-device features." } },
     { "@type": "Question", "name": "How is it different from Windows Voice Typing (Win+H)?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Windows Voice Typing sends your audio to Microsoft servers and needs an internet connection. Kara runs the speech model on your own machine, works with no connection at all, and lets you choose a larger and more accurate model." } },
+      "acceptedAnswer": { "@type": "Answer", "text": "Windows Voice Typing needs an internet connection. Vox0 runs Whisper on your own PC and works offline after downloading the speech model. You can choose the model according to your hardware and accuracy needs." } },
     { "@type": "Question", "name": "Which languages does it support?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Spanish, English, Portuguese, French, German and Italian. You pick one, which makes it faster and more accurate than guessing the language on every recording." } },
+      "acceptedAnswer": { "@type": "Answer", "text": "Spanish, English, Portuguese, French, German and Italian. Automatic mode detects the language for each dictation. You can also choose a fixed language to improve accuracy on short clips. Mixing languages in one recording can cause errors." } },
     { "@type": "Question", "name": "Do I need a graphics card?",
       "acceptedAnswer": { "@type": "Answer", "text": "No. The CPU edition runs on your processor. If you have a compatible NVIDIA graphics card and a current driver, install the NVIDIA GPU edition for faster transcription." } },
     { "@type": "Question", "name": "Is my voice sent anywhere?",
@@ -91,22 +92,24 @@
 
 <div class="topbar" id="topbar">
   <div class="wrap">
-    <img src="logo.png" alt=""><b>Kara</b>
+    <img src="logo.png" alt=""><b>Vox0</b>
     <nav><a href="install.html">Install guide</a></nav>
     <span class="grow"></span>
     <button class="theme-toggle" data-theme-toggle type="button"></button>
-    <a class="btn" data-pick-topbar href="https://github.com/bryramirezp/kara/releases/download/v0.3.5/Kara-Setup-0.3.5.exe">Download</a>
+    <a class="btn" data-pick-topbar href="https://github.com/bryramirezp/kara/releases/download/v0.3.6/Vox0-Setup-0.3.6.exe">Download</a>
   </div>
 </div>
 
 <header class="hero">
   <div class="wrap">
     <button class="theme-toggle" data-theme-toggle type="button"></button>
-    <img class="mark" src="logo.png" alt="Kara logo">
-    <h1>Speak.<br>It <span class="lime">types</span>.</h1>
+    <img class="mark" src="logo.png" alt="Vox0 logo">
+    <p class="eyebrow">Vox0 · free offline dictation for Windows</p>
+    <h1>Offline<br><span class="lime">dictation</span>.</h1>
     <p class="lede">
       Hold a key and speak. Your words appear in the app you're using.
-      Download the speech model once, then dictate offline on your Windows PC.
+      A free, open source alternative to Wispr Flow, with transcription running
+      100% locally on your PC. Download the speech model once, then dictate offline.
     </p>
 
     <!-- The app itself, photographed, first thing -- before anyone is asked to
@@ -118,7 +121,7 @@
 
          When it can run, demo.js swaps in the redraw below it -- the same
          header, log and foot as the real window, coloured from the exact
-         values in kara.py's THEMES -- and replays one real dictation: real
+         values in vox0.py's THEMES -- and replays one real dictation: real
          microphone, real transcription, real "Recorded 3.6s"/"WRITING IT
          DOWN" wording, captured once on Bryan's own machine by
          tools/capture_demo.py. It is still a drawing, not the window itself,
@@ -127,16 +130,16 @@
     <div class="demo" data-demo>
       <div class="app-shot-group" data-demo-shots>
         <img class="app-shot on-dark"  src="screenshot-main-dark.png"
-             alt="The Kara window, listing sentences that have been dictated"
+             alt="Vox0 listing dictated sentences"
              width="320" height="480">
         <img class="app-shot on-light" src="screenshot-main-light.png"
-             alt="The Kara window, listing sentences that have been dictated"
+             alt="Vox0 listing dictated sentences"
              width="320" height="480">
       </div>
       <div class="win-fake" data-demo-anim hidden aria-hidden="true">
         <div class="win-fake-bar">
           <img class="win-fake-mark" src="logo.png" alt="">
-          <span class="win-fake-title">Kara</span>
+          <span class="win-fake-title">Vox0</span>
           <span class="win-fake-icons" aria-hidden="true">⚙ &#8212; &#10005;</span>
         </div>
         <div class="win-fake-model">
@@ -163,19 +166,19 @@
 
     <div class="pick">
       <div class="pick-row">
-        <a class="btn pick-btn pick-gpu" id="heroBtn" data-pick-gpu href="https://github.com/bryramirezp/kara/releases/download/v0.3.5/Kara-Setup-GPU-0.3.5.exe">
+        <a class="btn pick-btn pick-gpu" id="heroBtn" data-pick-gpu href="https://github.com/bryramirezp/kara/releases/download/v0.3.6/Vox0-Setup-GPU-0.3.6.exe">
           <span class="pick-label">NVIDIA GPU — faster</span>
           <small>GPU NVIDIA compatible · driver required</small>
         </a>
-        <a class="btn btn-ghost pick-btn pick-cpu" data-pick-cpu href="https://github.com/bryramirezp/kara/releases/download/v0.3.5/Kara-Setup-0.3.5.exe">
+        <a class="btn btn-ghost pick-btn pick-cpu" data-pick-cpu href="https://github.com/bryramirezp/kara/releases/download/v0.3.6/Vox0-Setup-0.3.6.exe">
           <span class="pick-label">CPU — works on any PC</span>
           <small><!--dl-size-->74 MB<!--/dl-size--> · smaller download</small>
         </a>
       </div>
     </div>
-    <p class="sub">The NVIDIA edition includes its CUDA support. No download is needed after installation.</p>
+    <p class="sub">The NVIDIA edition includes its CUDA support. No separate NVIDIA runtime download is needed.</p>
     <p class="sub">
-      Kara <!--app-version-->0.3.5<!--/app-version--> · Windows 10 and 11 · nothing else to install<br>
+      Current release: <!--app-name-->Vox0<!--/app-name--> <!--app-version-->0.3.6<!--/app-version--> · Windows 10 and 11 · nothing else to install<br>
       <a href="install.html">Step by step install guide</a>
       · <a href="https://github.com/bryramirezp/kara/releases/latest">All files and release notes</a>
     </p>
@@ -218,9 +221,9 @@
     <div class="shots" style="margin-top:2.4em">
       <figure>
         <img class="on-dark"  src="screenshot-main-light.png"
-             alt="The Kara window in its light theme, showing text that was just dictated">
+             alt="Vox0 in its light theme, showing dictated text">
         <img class="on-light" src="screenshot-main-dark.png"
-             alt="The Kara window in its dark theme, showing text that was just dictated">
+             alt="Vox0 in its dark theme, showing dictated text">
         <figcaption>What you said &mdash; shown in the other theme</figcaption>
       </figure>
     </div>
@@ -230,26 +233,31 @@
 <section>
   <div class="wrap">
     <div class="narrow"><p class="eyebrow">How it compares</p>
-    <h2>Where it wins, and where it does not</h2></div>
+    <h2>Vox0 and Wispr Flow: dictation, with a different approach</h2>
+    <p>Both turn speech into text where you type. Vox0 is for Windows users
+      who want their voice processed entirely on their own PC.</p></div>
     <div class="table-scroll" style="margin-top:2.2em">
     <table>
       <thead>
-        <tr><th></th><th>Kara</th><th>Windows Voice Typing</th><th>Dragon</th><th>Otter.ai</th></tr>
+        <tr><th scope="col">Feature</th><th scope="col">Vox0</th><th scope="col">Wispr Flow</th></tr>
       </thead>
       <tbody>
-        <tr><td>Price</td><td>Free</td><td>Free</td><td>Paid</td><td>Free tier, then paid</td></tr>
-        <tr><td>Works offline</td><td>Yes</td><td>No</td><td>Yes</td><td>No</td></tr>
-        <tr><td>Needs an account</td><td>No</td><td>No</td><td>Yes</td><td>Yes</td></tr>
-        <tr><td>Types into any app</td><td>Yes</td><td>Yes</td><td>Yes</td><td>No</td></tr>
-        <tr><td>Voice commands</td><td>No</td><td>Some</td><td>Yes</td><td>No</td></tr>
-        <tr><td>Open source</td><td>Yes</td><td>No</td><td>No</td><td>No</td></tr>
+        <tr><th scope="row">Price</th><td>Free, no subscription</td><td>Free and paid plans</td></tr>
+        <tr><th scope="row">Transcription</th><td>On your PC, using Whisper</td><td>In the cloud</td></tr>
+        <tr><th scope="row">Works offline</th><td>Yes, after downloading the model</td><td>No, internet required</td></tr>
+        <tr><th scope="row">Dictation into apps</th><td>Yes</td><td>Yes</td></tr>
+        <tr><th scope="row">Platforms</th><td>Windows 10 and 11</td><td>Mac, Windows, iOS and Android</td></tr>
+        <tr><th scope="row">Text processing</th><td>Transcription, punctuation and number formatting</td><td>AI cleanup and rewriting</td></tr>
       </tbody>
     </table>
     </div>
     <p class="narrow" style="color:var(--muted);font-size:.9rem;margin-top:1.4em">
-      Dragon is bought mostly for controlling a computer by voice, and this does
-      not do that. It dictates text, and it does that part for free and without
-      a connection.
+      Vox0 focuses on local dictation. Flow also offers AI rewriting and
+      cross-device features. Compare those features with your needs.<br>
+      Sources: <a href="https://wisprflow.ai/">Wispr Flow features</a>,
+      <a href="https://docs.wisprflow.ai/articles/4048537120-what-to-expect-from-flow-accuracy-and-known-limitations">cloud transcription and internet requirement</a>,
+      <a href="https://wisprflow.ai/pricing">plans</a>.
+      Checked <time datetime="2026-10-21">October 21, 2026</time>.
     </p>
   </div>
 </section>
@@ -268,16 +276,16 @@
         <p>Yes, and it is open source under the MIT license. No account, no subscription, no paid tier, no trial that runs out.</p>
       </details>
       <details>
-        <summary>Is this a free alternative to Dragon NaturallySpeaking?</summary>
-        <p>For dictation, yes. You hold a key, speak, and the text is typed for you. It does not replace Dragon's voice commands for driving Windows by voice.</p>
+        <summary>Is Vox0 a free offline alternative to Wispr Flow?</summary>
+        <p>Yes, for dictating text into Windows apps. Vox0 runs Whisper entirely on your PC and works offline after a one-time speech model download. Wispr Flow transcribes in the cloud and needs an internet connection. Vox0 focuses on dictation, punctuation and number formatting; it does not offer Flow's AI rewriting or cross-device features.</p>
       </details>
       <details>
         <summary>How is it different from Windows Voice Typing (Win+H)?</summary>
-        <p>Windows Voice Typing sends your audio to Microsoft and needs a connection. This runs the model locally, works with no connection at all, and lets you pick a larger and more accurate model than the built-in one.</p>
+        <p>Windows Voice Typing needs an internet connection. Vox0 runs Whisper on your own PC and works offline after downloading the speech model. You can choose the model according to your hardware and accuracy needs.</p>
       </details>
       <details>
         <summary>Which languages does it support?</summary>
-        <p>Spanish, English, Portuguese, French, German and Italian. You choose one rather than letting it guess, which makes it faster and stops it from getting the language wrong on short recordings.</p>
+        <p>Spanish, English, Portuguese, French, German and Italian. Automatic mode detects the language for each dictation. You can also choose a fixed language to improve accuracy on short clips. Mixing languages in one recording can cause errors.</p>
       </details>
       <details>
         <summary>Do I need a graphics card?</summary>

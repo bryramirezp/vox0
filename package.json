@@ -1,5 +1,5 @@
 {
-  "name": "kara-site-tools",
+  "name": "vox0-site-tools",
   "private": true,
   "description": "Local-only TypeScript build for docs/demo.js. Never runs in CI -- Pages serves docs/ as committed plain JS.",
   "scripts": {

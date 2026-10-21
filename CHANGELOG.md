@@ -1,18 +1,18 @@
 # Changelog
 
-All notable changes to Kara. The format follows
+All notable changes to Vox0 (formerly Kara). The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses
 [semantic versioning](https://semver.org/spec/v2.0.0.html).
 
-Numbered versions below are published releases with installers:
+Numbered versions below are releases with installers:
 [all releases](https://github.com/bryramirezp/kara/releases).
 
 ## Unreleased
 
-### Changed
+## [0.3.6] - 2026-10-21
 
-- Simplified the website's opening headline and description around how Kara is
-  used, keeping the technical details in the rest of the page.
+- Kara is now called Vox0.
+- Removed the number-format and spoken-command selectors from Settings because they added little value.
 
 ## [0.3.5] - 2026-10-11
 
