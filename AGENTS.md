@@ -161,6 +161,11 @@ Cada cambio de comportamiento debe dejar trazabilidad adecuada:
 
 ### Flujo operativo de publicación
 
+Usa Git y GitHub para los despliegues: commit y push a `main` para publicar
+la web en GitHub Pages desde `main:/docs`, y GitHub CLI o API para gestionar
+los releases y sus assets. Verifica el commit remoto y que Pages haya
+desplegado ese mismo commit antes de dar el despliegue por terminado.
+
 La compilación y la publicación son fases separadas. Una solicitud de
 "subir" o "publicar" significa usar los instaladores ya construidos y
 validados en este entorno; nunca recompilar como parte de esa solicitud.
