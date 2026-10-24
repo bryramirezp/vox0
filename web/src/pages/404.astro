@@ -1,0 +1,16 @@
+---
+import Base from '../layouts/Base.astro';
+import Topbar from '../components/Topbar.astro';
+import Footer from '../components/Footer.astro';
+---
+<Base title="Page not found — Vox0" description="This page could not be found. Visit Vox0 or its Windows installation guide." noindex>
+  <Topbar guide />
+  <main id="main" class="page-head">
+    <div class="wrap narrow">
+      <p class="eyebrow">404</p>
+      <h1>Page not found</h1>
+      <p><a href="/">Vox0 home</a> · <a href="/install/">Install guide</a></p>
+    </div>
+  </main>
+  <Footer />
+</Base>

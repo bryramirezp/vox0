@@ -4,7 +4,10 @@
   "description": "Local-only TypeScript build for docs/demo.js. Never runs in CI -- Pages serves docs/ as committed plain JS.",
   "scripts": {
     "build:demo": "tsc -p tsconfig.json",
-    "watch:demo": "tsc -w -p tsconfig.json"
+    "watch:demo": "tsc -w -p tsconfig.json",
+    "dev:site": "npm --prefix web run dev",
+    "build:site": "npm --prefix web run build",
+    "preview:site": "npm --prefix web run preview"
   },
   "devDependencies": {
     "typescript": "^5.5.0"

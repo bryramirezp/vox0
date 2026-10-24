@@ -121,3 +121,17 @@ def test_docs_release_label_matches_the_new_artifact_brand(monkeypatch):
     assert 'Kara' not in text
     assert '<!--app-name-->Vox0<!--/app-name-->' in text
     assert '0.3.6' in text
+
+
+def test_web_release_advances_only_when_explicitly_requested():
+    import json
+    import re
+    from tools import stamp_docs
+
+    rel = "web/src/data/release.json"
+    assert all(path != rel for path, _, _ in stamp_docs.rules("0.3.7", None))
+    published = '{"version": "0.3.6", "brand": "Vox0", "gpuInstaller": "Vox0-Setup-GPU-0.3.6.exe"}'
+    for path, pattern, replacement in stamp_docs.rules("0.3.7", None, web_version="0.3.7"):
+        if path == rel:
+            published = re.sub(pattern, replacement, published)
+    assert json.loads(published) == {"version": "0.3.7", "brand": "Vox0", "gpuInstaller": None}

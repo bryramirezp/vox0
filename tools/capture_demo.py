@@ -15,6 +15,7 @@ docs/index.html for why that matters here.
 """
 import json
 import os
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -69,6 +70,9 @@ def main():
 
     with open(OUT, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2)
+    web_out = os.path.join(ROOT, "web", "public", "data", "demo-data.json")
+    os.makedirs(os.path.dirname(web_out), exist_ok=True)
+    shutil.copyfile(OUT, web_out)
     print("Saved to %s" % OUT)
     return 0
 

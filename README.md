@@ -13,7 +13,7 @@ No account, no cloud, no subscription.
 
 [**Download CPU edition**](https://github.com/bryramirezp/vox0/releases/download/v0.3.6/Vox0-Setup-0.3.6.exe)
  · [**NVIDIA GPU edition**](https://github.com/bryramirezp/vox0/releases/download/v0.3.6/Vox0-Setup-GPU-0.3.6.exe)
- · [Website](https://bryramirezp.github.io/vox0/)
+ · [Website](https://vox0.app/)
  · [What's changed](CHANGELOG.md)
  · [All files](https://github.com/bryramirezp/vox0/releases/latest)
 
@@ -175,6 +175,18 @@ To rebuild the icons after changing the drawing in the app:
 ```bat
 py -3 tools/make_logo.py
 ```
+
+## Website development
+
+The Astro frontend lives in [`web/`](web/README.md), prepared for Vercel and
+`https://vox0.app/`. Use Node.js 24, run `npm ci` inside `web/`, then `npm run dev`.
+`npm run build` checks types, builds the static site and verifies generated pages.
+Its output is `web/dist/`; the root `dist/` remains reserved for Windows installers.
+The old GitHub Pages URLs redirect visitors to the corresponding pages on the new domain.
+
+The public website follows the last published installer, independently of the
+desktop version being developed. See the website guide before changing its
+release manifest, deploying, or moving the domain.
 
 ## Questions
 

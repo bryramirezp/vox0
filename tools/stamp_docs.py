@@ -22,6 +22,7 @@ new numbers up on its own.
 import argparse
 import datetime
 import io
+import json
 import os
 import re
 import subprocess
@@ -72,7 +73,7 @@ def last_commit_date(rel_path):
     return datetime.date.today().isoformat()
 
 
-def rules(ver, mb, brand="Vox0"):
+def rules(ver, mb, brand="Vox0", web_version=None):
     """(file, pattern, replacement) triples, applied in order.
 
     Each pattern is anchored on something structural -- a JSON key, an XML tag,
@@ -168,6 +169,15 @@ def rules(ver, mb, brand="Vox0"):
             r"\g<1>%s\g<2>" % last_commit_date(src),
         ))
 
+    # The public website advances only after its installer is published.
+    if web_version:
+        web_brand = "Kara" if tuple(map(int, web_version.split("."))) <= (0, 3, 5) else "Vox0"
+        gpu = (f"{web_brand}-Setup-GPU-{web_version}.exe"
+               if tuple(map(int, web_version.split("."))) <= (0, 3, 6) else None)
+        for key, value in (("version", web_version), ("brand", web_brand), ("gpuInstaller", gpu)):
+            r.append(("web/src/data/release.json",
+                      r'("%s":\s*)(?:null|"[^"]*")' % key,
+                      r"\g<1>" + json.dumps(value)))
     return r
 
 
@@ -175,7 +185,11 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--check", action="store_true",
                     help="exit non-zero if a file would change, and write nothing")
+    ap.add_argument("--web-release", metavar="X.Y.Z",
+                    help="also update the public Astro site after this release is published")
     args = ap.parse_args()
+    if args.web_release and not re.fullmatch(r"\d+\.\d+\.\d+", args.web_release):
+        ap.error("--web-release must be X.Y.Z")
 
     ver = version()
     # Published versions through 0.3.5 keep Kara's immutable download names.
@@ -190,7 +204,7 @@ def main():
     if mb is None:
         print("  (no versioned installer in dist/ -- leaving the size alone)")
     pending = {}
-    for rel, pattern, repl in rules(ver, mb, brand):
+    for rel, pattern, repl in rules(ver, mb, brand, args.web_release):
         path = os.path.join(ROOT, rel)
         text = pending.get(rel)
         if text is None:

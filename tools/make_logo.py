@@ -16,6 +16,8 @@ ROOT   = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ASSETS = os.path.join(ROOT, "assets")
 DOCS   = os.path.join(ROOT, "docs")
 
+WEB = os.path.join(ROOT, "web", "public", "images")
+
 from PIL import Image, ImageDraw, ImageFont  # noqa: E402
 
 
@@ -48,10 +50,13 @@ def main():
     make = _load_drawing()
     os.makedirs(ASSETS, exist_ok=True)
     os.makedirs(DOCS, exist_ok=True)
+    os.makedirs(WEB, exist_ok=True)
     written = []
 
     def save(img, path):
         img.save(path)
+        if os.path.dirname(path) == DOCS:
+            img.save(os.path.join(WEB, os.path.basename(path)))
         written.append((os.path.relpath(path, ROOT), os.path.getsize(path)))
 
     # Windows wants every size in one file: 16 for the tray and title bar, 256

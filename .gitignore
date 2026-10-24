@@ -29,3 +29,7 @@ venv/
 
 # Node (docs/demo.ts build only -- docs/demo.js is committed, this isn't)
 node_modules/
+
+# Astro generated state
+.astro/
+.vercel/
