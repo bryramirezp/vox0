@@ -6,7 +6,7 @@ import test from 'node:test';
 const out = resolve('dist');
 const release = JSON.parse(readFileSync('src/data/release.json', 'utf8'));
 const preview = process.env.VERCEL_ENV && process.env.VERCEL_ENV !== 'production';
-const routes = ['/', '/install/'];
+const routes = ['/', '/install/', '/privacy/'];
 const pages = routes.map((route) => readFileSync(join(out, route, 'index.html'), 'utf8'));
 const attributes = (tag) => Object.fromEntries([...tag.matchAll(/([\w:-]+)="([^"]*)"/g)].map((m) => [m[1], m[2]]));
 const tags = (html, name) => [...html.matchAll(new RegExp(`<${name}\\b[^>]*>`, 'g'))].map((m) => attributes(m[0]));
@@ -32,7 +32,7 @@ test('pages have distinct search metadata, production canonicals and accessible 
 test('download links and structured data describe the published release', () => {
   const prefix = `https://github.com/bryramirezp/vox0/releases/download/v${release.version}/`;
   const installer = release.gpuInstaller || `${release.brand}-Setup-${release.version}.exe`;
-  for (const html of pages) {
+  for (const html of pages.slice(0, 2)) {
     const downloads = tags(html, 'a').map((a) => a.href).filter((url) => url?.endsWith('.exe'));
     assert(downloads.includes(prefix + installer));
     assert(downloads.every((url) => url === prefix + installer));

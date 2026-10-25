@@ -1,0 +1,55 @@
+---
+import Base from '../layouts/Base.astro';
+import Topbar from '../components/Topbar.astro';
+import Footer from '../components/Footer.astro';
+---
+<Base title="Vox0 privacy policy" description="How Vox0 handles microphone audio, dictation, local settings and model downloads.">
+  <Topbar />
+  <main id="main" class="wrap" style="max-width: 800px; padding-block: 4rem;">
+    <h1>Privacy policy</h1>
+    <p>Vox0 is developed by Bryan Ramirez. Last updated: October 24, 2026.</p>
+    <h2>Your voice and text stay on your PC</h2>
+    <p>Vox0 processes microphone recordings locally with Whisper. It does not upload
+      audio or transcriptions to the developer or an online transcription service.
+      The microphone records while you hold your configured push-to-talk key.
+      Recordings are processed in memory, not saved as audio files.</p>
+    <p>Vox0 types the resulting text into the focused editable field. It uses
+      Windows accessibility to identify that field and sends Unicode keyboard
+      input. It does not read the field's existing text or access your clipboard.
+      Recent dictations remain in the application's in-memory history until you
+      close it. The application receiving the text handles it under its own policy.</p>
+    <h2>Local data</h2>
+    <p>Settings and a bounded performance log are stored in
+      the MSIX package's private <code>LocalState</code> folder under
+      <code>%LOCALAPPDATA%\Packages</code>.
+      The log includes technical information such as timings, model and device
+      details and transcription character counts, never the dictated text.
+      Vox0 does not automatically send this log anywhere.</p>
+    <p>The MSIX stores its downloaded speech models in that same private folder.
+      Updates preserve this data. Uninstalling the new MSIX removes its settings,
+      logs and downloaded models. Reinstalling starts with default settings and
+      requires downloading a model again. External model folders selected by you
+      are not deleted. Older releases may have left data outside the package.</p>
+    <p>The source Development app uses its own profile in
+      <code>%LOCALAPPDATA%\Vox0Development</code> and the Python environment's
+      model cache; uninstalling the MSIX does not remove development data.</p>
+    <h2>Internet connections</h2>
+    <p>Internet is needed to download speech models from Hugging Face, including
+      a download needed to repair an incomplete cache. That service receives
+      normal connection information, such as your IP address and requested model.
+      Audio and dictation are not included. Once a working model is downloaded,
+      dictation can run offline.</p>
+    <p>Vox0 requires no account and includes no advertising or developer analytics.
+      Microsoft Store installation and updates are handled by Microsoft under
+      its own privacy policy.</p>
+    <h2>This website</h2>
+    <p>The website is hosted on Vercel. Hosting providers may process connection
+      and request data to serve and protect the site. The site stores your theme
+      preference locally in your browser. It does not receive dictation from Vox0.</p>
+    <h2>Contact</h2>
+    <p>For questions, use the
+      <a href="https://github.com/bryramirezp/vox0/issues">Vox0 support tracker</a>.
+      Issues are public; do not include private recordings, dictations or secrets.</p>
+  </main>
+  <Footer />
+</Base>

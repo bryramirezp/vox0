@@ -1,5 +1,11 @@
 # Vox0 website
 
+The Microsoft Store privacy page lives at `/privacy/`. Its source is
+`src/pages/privacy.astro`. Verify the public URL after each authorized deployment
+before using it in the Store submission. Store listing
+copy and remaining submission work are in `../packaging/store-listing.md`.
+Do not advance public download links while the MSIX trial is in progress.
+
 Astro generates the landing page and installation guide as static HTML for
 `https://vox0.app/`. The desktop application remains at the repository root.
 The website builds into `web/dist/`; the root `dist/` contains Windows installers
@@ -31,21 +37,15 @@ system fonts and has no analytics or external JavaScript.
 `src/data/release.json` describes the **published** installer, independently of
 the unreleased version in `vox0.py`. At migration time the published version is
 0.3.6, with separate immutable CPU and NVIDIA installers. The website offers one
-download: the NVIDIA installer, which includes CPU fallback. The local 0.3.7 build
+download: the NVIDIA installer, which includes CPU fallback. Development 1.0.2
 is not a public download. Do not publish links to an installer before it exists.
 
-After a new release and its assets have been published and verified, run from
-the repository root, using the actual released version:
-
-```powershell
-.venv/Scripts/python.exe tools/stamp_docs.py --web-release 0.3.7
-.venv/Scripts/python.exe tools/stamp_docs.py --check --web-release 0.3.7
-npm run build:site
-```
-
-This updates the manifest along with the existing release documentation. Releases
-after 0.3.6 use the single versioned installer. Normal application builds leave the
-public website's manifest unchanged. `tools/capture_demo.py`, `tools/screenshots.py`
+After the Microsoft Store listing is live and verified, update the website's
+download link and release metadata to that Store listing with authorization.
+The existing `tools/stamp_docs.py --web-release` workflow maintains historical
+EXE releases; do not use it to invent a GitHub EXE URL for an MSIX release.
+Normal application builds leave the public website's manifest unchanged.
+`tools/capture_demo.py`, `tools/screenshots.py`
 and `tools/make_logo.py` update both the Astro assets and legacy Pages assets during
 the transition. Review captured content and images before publishing.
 
@@ -53,9 +53,13 @@ the transition. Review captured content and images before publishing.
 
 Import `bryramirezp/vox0` with **Root Directory = `web`**. `vercel.json` sets Astro,
 `npm ci`, `npm run build`, and output `dist`. Production should use `main` once the
-website source is committed. Deployments uploaded directly from local files do
-not establish a Git integration; connect the repository only after those files
-exist remotely.
+website source is committed. GitHub is the source of truth: push approved code
+there first, then let the linked Vercel project build that commit. The initial
+direct upload did not establish a Git integration; connect the existing project
+after the source is pushed, and use Git for subsequent deployments. The user
+authorized the privacy-page deployment on October 25, 2026 after testing MSIX
+1.0.2. Keep public download links on the published EXE until the Store listing
+is certified, live and verified.
 
 Add `vox0.app` as the production domain and `www.vox0.app` as a permanent redirect
 to it. Use the DNS targets shown by Vercel for this project; keep existing mail
@@ -69,10 +73,12 @@ Sitemaps omit `lastmod` rather than claiming every build changed the content.
 
 ## Move from GitHub Pages
 
-The new domain passed its HTTPS checks. `docs/index.html` and `docs/install.html`
-now keep their legacy content and use immediate refresh with canonical URLs to
-send visitors and crawlers to the matching Astro page. GitHub Pages continues
-serving `main:/docs`; it is not a second Astro source directory.
+The new domain passed its HTTPS checks. Local changes in `docs/index.html` and
+`docs/install.html` preserve legacy content and add immediate refresh with matching
+canonical URLs. These changes have not been pushed. The user has chosen to retire
+the old Pages website after the installer test and GitHub-to-Vercel cutover;
+disable Pages hosting at that point, keeping repository history and assets used
+by the README. Until then GitHub Pages continues serving `main:/docs`.
 Do not point Pages or Vercel at the desktop application's compiled payload.
 
 | Previous URL | New URL |
