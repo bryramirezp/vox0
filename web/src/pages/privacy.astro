@@ -20,15 +20,7 @@ import Footer from '../components/Footer.astro';
         <p class="privacy-date">Developed by Bryan Ramirez · Updated <time datetime="2026-10-24">October 24, 2026</time></p>
       </div>
     </header>
-    <div class="wrap privacy-layout">
-      <nav class="privacy-nav" aria-label="Privacy policy contents">
-        <p class="eyebrow">On this page</p>
-        <a href="#voice">Your voice &amp; text</a>
-        <a href="#local-data">Local data</a>
-        <a href="#connections">Internet connections</a>
-        <a href="#website">This website</a>
-        <a href="#contact">Contact</a>
-      </nav>
+    <div class="wrap narrow privacy-layout">
       <article class="privacy-copy" aria-label="Privacy policy">
         <section id="voice">
           <h2>Your voice and text stay on your PC</h2>
@@ -100,16 +92,8 @@ import Footer from '../components/Footer.astro';
   .privacy-facts li::before { content: '✓'; color: var(--accent-text); margin-right: 7px; }
   .privacy-date { color: var(--muted); font-size: .78rem; margin: 0; }
   .privacy-layout {
-    display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 54px;
     padding-top: 54px; padding-bottom: 76px; border-top: 1px solid var(--line);
   }
-  .privacy-nav { position: sticky; top: 90px; align-self: start; }
-  .privacy-nav .eyebrow { margin-bottom: 14px; }
-  .privacy-nav a {
-    display: block; padding: 8px 0 8px 14px; border-left: 1px solid var(--line);
-    color: var(--muted); font-size: .85rem; line-height: 1.4; text-decoration: none;
-  }
-  .privacy-nav a:hover { color: var(--title); border-color: var(--accent-text); }
   .privacy-copy { min-width: 0; }
   .privacy-copy section { padding: 34px 0; scroll-margin-top: 88px; }
   .privacy-copy section:first-child { padding-top: 0; border-top: 0; }
@@ -127,10 +111,7 @@ import Footer from '../components/Footer.astro';
   }
   @media (max-width: 700px) {
     .privacy-hero { padding: 104px 0 42px; }
-    .privacy-layout { grid-template-columns: 1fr; gap: 36px; padding-top: 32px; padding-bottom: 48px; }
-    .privacy-nav { position: static; display: flex; flex-wrap: wrap; gap: 8px; }
-    .privacy-nav .eyebrow { width: 100%; margin-bottom: 4px; }
-    .privacy-nav a { padding: 9px 12px; border: 1px solid var(--line); border-radius: 7px; }
+    .privacy-layout { padding-top: 32px; padding-bottom: 48px; }
     .privacy-copy section { padding: 28px 0; }
   }
 </style>
