@@ -6,7 +6,7 @@ import test from 'node:test';
 const out = resolve('dist');
 const release = JSON.parse(readFileSync('src/data/release.json', 'utf8'));
 const preview = process.env.VERCEL_ENV && process.env.VERCEL_ENV !== 'production';
-const routes = ['/', '/install/', '/privacy/'];
+const routes = ['/', '/privacy/'];
 const pages = routes.map((route) => readFileSync(join(out, route, 'index.html'), 'utf8'));
 const attributes = (tag) => Object.fromEntries([...tag.matchAll(/([\w:-]+)="([^"]*)"/g)].map((m) => [m[1], m[2]]));
 const tags = (html, name) => [...html.matchAll(new RegExp(`<${name}\\b[^>]*>`, 'g'))].map((m) => attributes(m[0]));
@@ -32,21 +32,17 @@ test('pages have distinct search metadata, production canonicals and accessible 
 test('download links and structured data describe the published release', () => {
   const prefix = `https://github.com/bryramirezp/vox0/releases/download/v${release.version}/`;
   const installer = release.gpuInstaller || `${release.brand}-Setup-${release.version}.exe`;
-  for (const html of pages.slice(0, 2)) {
-    const downloads = tags(html, 'a').map((a) => a.href).filter((url) => url?.endsWith('.exe'));
-    assert(downloads.includes(prefix + installer));
-    assert(downloads.every((url) => url === prefix + installer));
-    const schema = [...html.matchAll(/<script\b[^>]*type="application\/ld\+json"[^>]*>(.*?)<\/script>/gs)].map((m) => JSON.parse(m[1]));
-    assert(schema.length > 0);
-    const app = schema.find((s) => s['@type'] === 'SoftwareApplication');
-    if (app) {
-      assert.equal(app.softwareVersion, release.version);
-      assert.equal(app.downloadUrl, prefix + installer);
-      assert.equal(app.offers.price, '0');
-      assert(!app.aggregateRating);
-    }
-  }
-  assert(pages[1].replaceAll('&quot;', '"').includes(`Get-FileHash "$HOME\\Downloads\\${installer}" -Algorithm SHA256`));
+  const html = pages[0];
+  const downloads = tags(html, 'a').map((a) => a.href).filter((url) => url?.endsWith('.exe'));
+  assert(downloads.includes(prefix + installer));
+  assert(downloads.every((url) => url === prefix + installer));
+  const schema = [...html.matchAll(/<script\b[^>]*type="application\/ld\+json"[^>]*>(.*?)<\/script>/gs)].map((m) => JSON.parse(m[1]));
+  const app = schema.find((s) => s['@type'] === 'SoftwareApplication');
+  assert(app);
+  assert.equal(app.softwareVersion, release.version);
+  assert.equal(app.downloadUrl, prefix + installer);
+  assert.equal(app.offers.price, '0');
+  assert(!app.aggregateRating);
   const heroDownload = pages[0].match(/<div class="pick">(.*?)<\/div>/s)?.[1];
   assert(heroDownload);
   assert.equal(tags(heroDownload, 'a').length, 1);
@@ -87,10 +83,15 @@ test('sitemap and robots expose only canonical content; 404 stays excluded', () 
   assert(existsSync(join(out, 'googlece489537988ffecf.html')));
 });
 
-test('legacy URLs redirect to their matching page', () => {
+test('retired installation guide redirects home without leaving broken links', () => {
   const config = JSON.parse(readFileSync('vercel.json', 'utf8'));
-  for (const [source, destination] of [['/index.html', '/'], ['/install.html', '/install/'], ['/vox0/install.html', '/install/']]) {
+  for (const source of ['/index.html', '/install/:path*', '/install.html', '/vox0/install.html']) {
+    const destination = '/';
     assert(config.redirects.some((r) => r.source === source && r.destination === destination && r.permanent));
+  }
+  assert(!existsSync(join(out, 'install/index.html')));
+  for (const html of [...pages, readFileSync(join(out, '404.html'), 'utf8')]) {
+    assert(!tags(html, 'a').some((a) => a.href?.startsWith('/install')));
   }
   assert.equal(config.outputDirectory, 'dist');
 });

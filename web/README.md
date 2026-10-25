@@ -6,10 +6,11 @@ before using it in the Store submission. Store listing
 copy and remaining submission work are in `../packaging/store-listing.md`.
 Do not advance public download links while the MSIX trial is in progress.
 
-Astro generates the landing page and installation guide as static HTML for
+Astro generates the landing page and privacy policy as static HTML for
 `https://vox0.app/`. The desktop application remains at the repository root.
 The website builds into `web/dist/`; the root `dist/` contains Windows installers
-and must never be used as Vercel's output directory.
+and must never be used as Vercel's output directory. The old installation guide
+has been removed; `/install/` and its legacy URLs redirect to the home page.
 
 ## Local development
 
@@ -37,8 +38,9 @@ system fonts and has no analytics or external JavaScript.
 `src/data/release.json` describes the **published** installer, independently of
 the unreleased version in `vox0.py`. At migration time the published version is
 0.3.6, with separate immutable CPU and NVIDIA installers. The website offers one
-download: the NVIDIA installer, which includes CPU fallback. Development 1.0.2
-is not a public download. Do not publish links to an installer before it exists.
+download: the NVIDIA installer, which includes CPU fallback. MSIX 1.0.2 is in
+Store certification and is not a public download yet. Switch the download button
+to the verified Microsoft Store listing when installation becomes available.
 
 After the Microsoft Store listing is live and verified, update the website's
 download link and release metadata to that Store listing with authorization.
@@ -52,11 +54,10 @@ the transition. Review captured content and images before publishing.
 ## Vercel
 
 Import `bryramirezp/vox0` with **Root Directory = `web`**. `vercel.json` sets Astro,
-`npm ci`, `npm run build`, and output `dist`. Production should use `main` once the
-website source is committed. GitHub is the source of truth: push approved code
-there first, then let the linked Vercel project build that commit. The initial
-direct upload did not establish a Git integration; connect the existing project
-after the source is pushed, and use Git for subsequent deployments. The user
+`npm ci`, `npm run build`, and output `dist`. GitHub is the source of truth:
+push approved website source to `main`, then deploy that exact Git commit to the
+existing Vercel project. Use its Git source rather than direct file uploads.
+The user
 authorized the privacy-page deployment on October 25, 2026 after testing MSIX
 1.0.2. Keep public download links on the published EXE until the Store listing
 is certified, live and verified.
@@ -85,7 +86,7 @@ Do not point Pages or Vercel at the desktop application's compiled payload.
 | --- | --- |
 | `https://bryramirezp.github.io/vox0/` | `https://vox0.app/` |
 | `https://bryramirezp.github.io/vox0/index.html` | `https://vox0.app/` |
-| `https://bryramirezp.github.io/vox0/install.html` | `https://vox0.app/install/` |
+| `https://bryramirezp.github.io/vox0/install.html` | `https://vox0.app/` |
 
 Vercel redirects legacy `.html` and `/vox0` paths arriving on the new host.
 Those rules cannot redirect requests received by GitHub Pages. The old host uses
@@ -94,7 +95,7 @@ per-path HTTP redirect configuration. This is not an HTTP 301 or 308 response.
 
 Verify the new domain in Google Search Console using the domain's DNS. The
 preserved HTML verification file does not itself verify ownership of the new
-domain. Submit `https://vox0.app/sitemap-index.xml`, inspect the home and guide URLs,
+domain. Submit `https://vox0.app/sitemap-index.xml`, inspect the home and privacy URLs,
 and monitor the old and new properties. Indexing and field performance require
 post-deployment observation; a passing local build does not establish either.
 

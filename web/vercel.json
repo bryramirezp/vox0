@@ -7,10 +7,11 @@
   "trailingSlash": true,
   "redirects": [
     { "source": "/index.html", "destination": "/", "permanent": true },
-    { "source": "/install.html", "destination": "/install/", "permanent": true },
+    { "source": "/install/:path*", "destination": "/", "permanent": true },
+    { "source": "/install.html", "destination": "/", "permanent": true },
     { "source": "/vox0", "destination": "/", "permanent": true },
     { "source": "/vox0/index.html", "destination": "/", "permanent": true },
-    { "source": "/vox0/install.html", "destination": "/install/", "permanent": true },
+    { "source": "/vox0/install.html", "destination": "/", "permanent": true },
     { "source": "/sitemap.xml", "destination": "/sitemap-index.xml", "permanent": true }
   ],
   "headers": [

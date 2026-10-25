@@ -1,15 +1,15 @@
 ---
 import { downloadUrl } from '../data/release';
 
-interface Props { guide?: boolean; }
-const { guide = false } = Astro.props;
+interface Props { show?: boolean; }
+const { show = false } = Astro.props;
 ---
-<div class:list={['topbar', { show: guide }]} id="topbar">
+<div class:list={['topbar', { show }]} id="topbar">
   <div class="wrap">
     <a href="/" style="display:flex;align-items:center;gap:8px;text-decoration:none" aria-label="Vox0 home">
       <img src="/images/logo.png" alt="" width="26" height="26" /><b>Vox0</b>
     </a>
-    <nav aria-label="Main navigation"><a href="/install/" aria-current={guide ? 'page' : undefined}>Install guide</a></nav>
+    <nav aria-label="Main navigation"><a href="/privacy/" aria-current={Astro.url.pathname === '/privacy/' ? 'page' : undefined}>Privacy</a></nav>
     <span class="grow"></span>
     <button class="theme-toggle" data-theme-toggle type="button" aria-label="Switch color theme"></button>
     <a class="btn" href={downloadUrl}>Download</a>

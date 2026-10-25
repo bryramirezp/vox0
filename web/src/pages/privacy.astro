@@ -4,52 +4,133 @@ import Topbar from '../components/Topbar.astro';
 import Footer from '../components/Footer.astro';
 ---
 <Base title="Vox0 privacy policy" description="How Vox0 handles microphone audio, dictation, local settings and model downloads.">
-  <Topbar />
-  <main id="main" class="wrap" style="max-width: 800px; padding-block: 4rem;">
-    <h1>Privacy policy</h1>
-    <p>Vox0 is developed by Bryan Ramirez. Last updated: October 24, 2026.</p>
-    <h2>Your voice and text stay on your PC</h2>
-    <p>Vox0 processes microphone recordings locally with Whisper. It does not upload
-      audio or transcriptions to the developer or an online transcription service.
-      The microphone records while you hold your configured push-to-talk key.
-      Recordings are processed in memory, not saved as audio files.</p>
-    <p>Vox0 types the resulting text into the focused editable field. It uses
-      Windows accessibility to identify that field and sends Unicode keyboard
-      input. It does not read the field's existing text or access your clipboard.
-      Recent dictations remain in the application's in-memory history until you
-      close it. The application receiving the text handles it under its own policy.</p>
-    <h2>Local data</h2>
-    <p>Settings and a bounded performance log are stored in
-      the MSIX package's private <code>LocalState</code> folder under
-      <code>%LOCALAPPDATA%\Packages</code>.
-      The log includes technical information such as timings, model and device
-      details and transcription character counts, never the dictated text.
-      Vox0 does not automatically send this log anywhere.</p>
-    <p>The MSIX stores its downloaded speech models in that same private folder.
-      Updates preserve this data. Uninstalling the new MSIX removes its settings,
-      logs and downloaded models. Reinstalling starts with default settings and
-      requires downloading a model again. External model folders selected by you
-      are not deleted. Older releases may have left data outside the package.</p>
-    <p>The source Development app uses its own profile in
-      <code>%LOCALAPPDATA%\Vox0Development</code> and the Python environment's
-      model cache; uninstalling the MSIX does not remove development data.</p>
-    <h2>Internet connections</h2>
-    <p>Internet is needed to download speech models from Hugging Face, including
-      a download needed to repair an incomplete cache. That service receives
-      normal connection information, such as your IP address and requested model.
-      Audio and dictation are not included. Once a working model is downloaded,
-      dictation can run offline.</p>
-    <p>Vox0 requires no account and includes no advertising or developer analytics.
-      Microsoft Store installation and updates are handled by Microsoft under
-      its own privacy policy.</p>
-    <h2>This website</h2>
-    <p>The website is hosted on Vercel. Hosting providers may process connection
-      and request data to serve and protect the site. The site stores your theme
-      preference locally in your browser. It does not receive dictation from Vox0.</p>
-    <h2>Contact</h2>
-    <p>For questions, use the
-      <a href="https://github.com/bryramirezp/vox0/issues">Vox0 support tracker</a>.
-      Issues are public; do not include private recordings, dictations or secrets.</p>
+  <Topbar show />
+  <main id="main" class="privacy">
+    <header class="hero privacy-hero">
+      <div class="wrap">
+        <img class="mark" src="/images/logo.png" alt="" width="256" height="256" />
+        <p class="eyebrow">Vox0 · Privacy policy</p>
+        <h1>Privacy,<br /><span class="lime">by design.</span></h1>
+        <p class="lede">Your voice and dictations stay on your PC. Here’s what Vox0 stores locally and when it connects to the internet.</p>
+        <ul class="privacy-facts" aria-label="Privacy at a glance">
+          <li>No audio uploads</li>
+          <li>No account</li>
+          <li>No developer analytics</li>
+        </ul>
+        <p class="privacy-date">Developed by Bryan Ramirez · Updated <time datetime="2026-10-24">October 24, 2026</time></p>
+      </div>
+    </header>
+    <div class="wrap privacy-layout">
+      <nav class="privacy-nav" aria-label="Privacy policy contents">
+        <p class="eyebrow">On this page</p>
+        <a href="#voice">Your voice &amp; text</a>
+        <a href="#local-data">Local data</a>
+        <a href="#connections">Internet connections</a>
+        <a href="#website">This website</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <article class="privacy-copy" aria-label="Privacy policy">
+        <section id="voice">
+          <h2>Your voice and text stay on your PC</h2>
+          <p>Vox0 processes microphone recordings locally with Whisper. It does not upload
+            audio or transcriptions to the developer or an online transcription service.
+            The microphone records while you hold your configured push-to-talk key.
+            Recordings are processed in memory, not saved as audio files.</p>
+          <p>Vox0 types the resulting text into the focused editable field. It uses
+            Windows accessibility to identify that field and sends Unicode keyboard
+            input. It does not read the field's existing text or access your clipboard.
+            Recent dictations remain in the application's in-memory history until you
+            close it. The application receiving the text handles it under its own policy.</p>
+        </section>
+        <section id="local-data">
+          <h2>Local data</h2>
+          <p>Settings and a bounded performance log are stored in
+            the MSIX package's private <code>LocalState</code> folder under
+            <code>%LOCALAPPDATA%\Packages</code>.
+            The log includes technical information such as timings, model and device
+            details and transcription character counts, never the dictated text.
+            Vox0 does not automatically send this log anywhere.</p>
+          <p>The MSIX stores its downloaded speech models in that same private folder.
+            Updates preserve this data. Uninstalling the new MSIX removes its settings,
+            logs and downloaded models. Reinstalling starts with default settings and
+            requires downloading a model again. External model folders selected by you
+            are not deleted. Older releases may have left data outside the package.</p>
+          <p>The source Development app uses its own profile in
+            <code>%LOCALAPPDATA%\Vox0Development</code> and the Python environment's
+            model cache; uninstalling the MSIX does not remove development data.</p>
+        </section>
+        <section id="connections">
+          <h2>Internet connections</h2>
+          <p>Internet is needed to download speech models from Hugging Face, including
+            a download needed to repair an incomplete cache. That service receives
+            normal connection information, such as your IP address and requested model.
+            Audio and dictation are not included. Once a working model is downloaded,
+            dictation can run offline.</p>
+          <p>Vox0 requires no account and includes no advertising or developer analytics.
+            Microsoft Store installation and updates are handled by Microsoft under
+            its own privacy policy.</p>
+        </section>
+        <section id="website">
+          <h2>This website</h2>
+          <p>The website is hosted on Vercel. Hosting providers may process connection
+            and request data to serve and protect the site. The site stores your theme
+            preference locally in your browser. It does not receive dictation from Vox0.</p>
+        </section>
+        <section id="contact" class="privacy-contact">
+          <h2>Contact</h2>
+          <p>For questions, use the
+            <a href="https://github.com/bryramirezp/vox0/issues">Vox0 support tracker</a>.
+            Issues are public; do not include private recordings, dictations or secrets.</p>
+        </section>
+      </article>
+    </div>
   </main>
   <Footer />
 </Base>
+
+<style>
+  .privacy-hero { padding: 116px 0 60px; }
+  .privacy-hero .mark { width: 64px; height: 64px; margin-bottom: 20px; }
+  .privacy-hero .lede { max-width: 33em; margin-bottom: 26px; }
+  .privacy-facts {
+    display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 24px;
+    list-style: none; padding: 0; margin: 0 0 22px;
+    color: var(--title); font-size: .88rem;
+  }
+  .privacy-facts li::before { content: '✓'; color: var(--accent-text); margin-right: 7px; }
+  .privacy-date { color: var(--muted); font-size: .78rem; margin: 0; }
+  .privacy-layout {
+    display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 54px;
+    padding-top: 54px; padding-bottom: 76px; border-top: 1px solid var(--line);
+  }
+  .privacy-nav { position: sticky; top: 90px; align-self: start; }
+  .privacy-nav .eyebrow { margin-bottom: 14px; }
+  .privacy-nav a {
+    display: block; padding: 8px 0 8px 14px; border-left: 1px solid var(--line);
+    color: var(--muted); font-size: .85rem; line-height: 1.4; text-decoration: none;
+  }
+  .privacy-nav a:hover { color: var(--title); border-color: var(--accent-text); }
+  .privacy-copy { min-width: 0; }
+  .privacy-copy section { padding: 34px 0; scroll-margin-top: 88px; }
+  .privacy-copy section:first-child { padding-top: 0; border-top: 0; }
+  .privacy-copy h2 { font-size: clamp(1.3rem, 2.7vw, 1.6rem); margin-bottom: 20px; }
+  .privacy-copy p { line-height: 1.8; }
+  .privacy-copy section > :last-child { margin-bottom: 0; }
+  .privacy-copy code {
+    padding: 2px 5px; border: 1px solid var(--line); border-radius: 5px;
+    background: var(--panel); color: var(--title); font: .8em var(--mono);
+    overflow-wrap: anywhere;
+  }
+  .privacy-copy .privacy-contact {
+    margin-top: 12px; padding: 24px; border: 1px solid var(--line);
+    border-radius: 12px; background: var(--tint);
+  }
+  @media (max-width: 700px) {
+    .privacy-hero { padding: 104px 0 42px; }
+    .privacy-layout { grid-template-columns: 1fr; gap: 36px; padding-top: 32px; padding-bottom: 48px; }
+    .privacy-nav { position: static; display: flex; flex-wrap: wrap; gap: 8px; }
+    .privacy-nav .eyebrow { width: 100%; margin-bottom: 4px; }
+    .privacy-nav a { padding: 9px 12px; border: 1px solid var(--line); border-radius: 7px; }
+    .privacy-copy section { padding: 28px 0; }
+  }
+</style>
