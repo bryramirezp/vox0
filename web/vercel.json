@@ -7,7 +7,7 @@
   "trailingSlash": true,
   "redirects": [
     { "source": "/index.html", "destination": "/", "permanent": true },
-    { "source": "/install/:path*", "destination": "/", "permanent": true },
+    { "source": "/install/", "destination": "/", "permanent": true },
     { "source": "/install.html", "destination": "/", "permanent": true },
     { "source": "/vox0", "destination": "/", "permanent": true },
     { "source": "/vox0/index.html", "destination": "/", "permanent": true },

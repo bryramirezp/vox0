@@ -85,7 +85,7 @@ test('sitemap and robots expose only canonical content; 404 stays excluded', () 
 
 test('retired installation guide redirects home without leaving broken links', () => {
   const config = JSON.parse(readFileSync('vercel.json', 'utf8'));
-  for (const source of ['/index.html', '/install/:path*', '/install.html', '/vox0/install.html']) {
+  for (const source of ['/index.html', '/install/', '/install.html', '/vox0/install.html']) {
     const destination = '/';
     assert(config.redirects.some((r) => r.source === source && r.destination === destination && r.permanent));
   }
